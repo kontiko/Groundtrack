@@ -26,10 +26,14 @@ func _ready():
 func changed_orbit(name):
 	var orbit_conf = $HSplitContainer/Left_Organize/Orbit_Container.find_node(name, true, false)
 	var orbit_3d = $\"HSplitContainer/TabContainer/3D View/Viewport/Spatial\".find_node(name, true, false)
-	var orbit_2d = $\"HSplitContainer/TabContainer/2D View/Viewport/Node2D\".find_node(name,true, false)
 	orbit_3d.mesh = orbit_conf.Points
 	var points = calc_groundpath(orbit_conf.semi_major,orbit_conf.Vertices)
 	$\"HSplitContainer/TabContainer/2D View/Viewport/Node2D\".update_orbit(name,orbit_conf.color,points)
+
+func orbit_delete(name):
+	var orbit_3d = $\"HSplitContainer/TabContainer/3D View/Viewport/Spatial\".find_node(name, true, false)
+	orbit_3d.queue_free()
+	$\"HSplitContainer/TabContainer/2D View/Viewport/Node2D\".remove_orbit(name)
 
 func _on_Add_orbit_Button_pressed():
 	var ctrl = Orbit_control.instance()
@@ -38,6 +42,7 @@ func _on_Add_orbit_Button_pressed():
 	ctrl.color = Color.cyan
 	$HSplitContainer/Left_Organize/Orbit_Container.add_child(ctrl)
 	ctrl.connect(\"changed\",self,\"changed_orbit\")
+	ctrl.connect(\"delete\",self,\"orbit_delete\")
 	var mesh = MeshInstance.new()
 	mesh.mesh = ctrl.Points
 	mesh.name = ctrl.name

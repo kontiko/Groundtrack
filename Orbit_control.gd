@@ -1,6 +1,7 @@
 extends VBoxContainer
 
 signal changed(name)
+signal delete(name)
 export var periapsis = 100.0 
 export var apoapsis = 100.0 
 export (float) var semi_major 
@@ -60,7 +61,7 @@ func _on_TextureButton_toggled(button_pressed):
 
 
 func _on_Button_pressed():
-	emit_signal("changed")
+	emit_signal("delete",name)
 	self.queue_free()
 
 
