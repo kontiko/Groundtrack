@@ -1,0 +1,35 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+[application]
+
+config/name="Testproject"
+run/main_scene="res://Main.tscn"
+config/icon="res://icon.png"
+
+[display]
+
+window/stretch/aspect="keep_width"
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+batching/parameters/batch_buffer_size=65535
+limits/buffers/blend_shape_max_buffer_size_kb=16384
+limits/buffers/canvas_polygon_buffer_size_kb=1024
+limits/buffers/canvas_polygon_index_buffer_size_kb=1024
+environment/default_environment="res://default_env.tres"
