@@ -15,6 +15,8 @@ var color = Color.green
 var aop = 0.0
 var incl = 0.0
 var aoa = 0.0
+
+
 func update_Mesh():
 	var vertices = PoolVector3Array()
 	for i in range(point_count):

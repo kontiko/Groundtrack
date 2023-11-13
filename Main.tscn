@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://DarkTheme/Dark.theme" type="Theme" id=1]
 [ext_resource path="res://DarkTheme/Fonts/Ubuntu-L.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Orbit_control.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Spatial.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Earth_map.tscn" type="PackedScene" id=5]
+[ext_resource path="res://icons8-arrow-down-32.png" type="Texture" id=6]
 
 [sub_resource type="GDScript" id=3]
 script/source = "extends Control
@@ -178,15 +179,73 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "Add Orbit"
 
-[node name="TabContainer" type="TabContainer" parent="HSplitContainer"]
+[node name="Orbit_Container" type="VBoxContainer" parent="HSplitContainer"]
 margin_left = 515.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/Orbit_Container"]
+margin_right = 509.0
+margin_bottom = 33.0
+
+[node name="TextureButton" type="TextureButton" parent="HSplitContainer/Orbit_Container/HBoxContainer"]
+margin_right = 32.0
+margin_bottom = 33.0
+texture_normal = ExtResource( 6 )
+
+[node name="Button" type="Button" parent="HSplitContainer/Orbit_Container/HBoxContainer"]
+margin_left = 35.0
+margin_right = 65.0
+margin_bottom = 33.0
+text = "1x"
+
+[node name="Button2" type="Button" parent="HSplitContainer/Orbit_Container/HBoxContainer"]
+margin_left = 68.0
+margin_right = 112.0
+margin_bottom = 33.0
+text = "50x"
+
+[node name="Button3" type="Button" parent="HSplitContainer/Orbit_Container/HBoxContainer"]
+margin_left = 115.0
+margin_right = 173.0
+margin_bottom = 33.0
+text = "100x"
+
+[node name="Button4" type="Button" parent="HSplitContainer/Orbit_Container/HBoxContainer"]
+margin_left = 176.0
+margin_right = 234.0
+margin_bottom = 33.0
+text = "200x"
+
+[node name="Button5" type="Button" parent="HSplitContainer/Orbit_Container/HBoxContainer"]
+margin_left = 237.0
+margin_right = 295.0
+margin_bottom = 33.0
+text = "500x"
+
+[node name="Button6" type="Button" parent="HSplitContainer/Orbit_Container/HBoxContainer"]
+margin_left = 298.0
+margin_right = 370.0
+margin_bottom = 33.0
+text = "1000x"
+
+[node name="Button7" type="Button" parent="HSplitContainer/Orbit_Container/HBoxContainer"]
+margin_left = 373.0
+margin_right = 445.0
+margin_bottom = 33.0
+text = "5000x"
+
+[node name="TabContainer" type="TabContainer" parent="HSplitContainer/Orbit_Container"]
+margin_top = 36.0
+margin_right = 509.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource( 1 )
 tab_align = 0
 
-[node name="3D View" type="ViewportContainer" parent="HSplitContainer/TabContainer"]
+[node name="3D View" type="ViewportContainer" parent="HSplitContainer/Orbit_Container/TabContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -196,14 +255,14 @@ margin_bottom = -4.0
 stretch = true
 script = SubResource( 2 )
 
-[node name="Viewport" type="Viewport" parent="HSplitContainer/TabContainer/3D View"]
-size = Vector2( 501, 555 )
+[node name="Viewport" type="Viewport" parent="HSplitContainer/Orbit_Container/TabContainer/3D View"]
+size = Vector2( 501, 519 )
 handle_input_locally = false
 render_target_update_mode = 3
 
-[node name="Spatial" parent="HSplitContainer/TabContainer/3D View/Viewport" instance=ExtResource( 4 )]
+[node name="Spatial" parent="HSplitContainer/Orbit_Container/TabContainer/3D View/Viewport" instance=ExtResource( 4 )]
 
-[node name="2D View" type="ViewportContainer" parent="HSplitContainer/TabContainer"]
+[node name="2D View" type="ViewportContainer" parent="HSplitContainer/Orbit_Container/TabContainer"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -213,14 +272,14 @@ margin_right = -4.0
 margin_bottom = -4.0
 stretch = true
 
-[node name="Viewport" type="Viewport" parent="HSplitContainer/TabContainer/2D View"]
-size = Vector2( 501, 555 )
+[node name="Viewport" type="Viewport" parent="HSplitContainer/Orbit_Container/TabContainer/2D View"]
+size = Vector2( 501, 519 )
 size_override_stretch = true
 handle_input_locally = false
 hdr = false
 usage = 0
 render_target_update_mode = 0
 
-[node name="Node2D" parent="HSplitContainer/TabContainer/2D View/Viewport" instance=ExtResource( 5 )]
+[node name="Node2D" parent="HSplitContainer/Orbit_Container/TabContainer/2D View/Viewport" instance=ExtResource( 5 )]
 
 [connection signal="pressed" from="HSplitContainer/Left_Organize/Add_orbit_Button" to="." method="_on_Add_orbit_Button_pressed"]
