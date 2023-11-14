@@ -17,20 +17,32 @@ var aop = 0.0
 var incl = 0.0
 var aoa = 0.0
 var period = 0
+var time = 1.0
+var pos = 0
+var pos_offset = 0
+var delta_area = []
+var complete_area = 0.0
 
+var orbit_steps = 0.0
 
 func update_Mesh():
+	delta_area = [0]
 	var vertices = PoolVector3Array()
 	var point_list = PoolVector3Array()
 	var last_point = calc_vec(0)
+	complete_area = 0.0
 	point_list.push_back(last_point)
 	for i in range(1,point_count):
 		var point = calc_vec(float(i)/point_count*2*PI)
 		vertices.push_back(last_point)
 		vertices.push_back(point)
 		point_list.push_back(point)
+		var triangle = last_point.cross(point).length()/2.0
+		complete_area+=triangle
+		delta_area.append(complete_area)
 		last_point = point
 	points = point_list
+	time = (delta_area[pos]/complete_area)*time
 	# Initialize the ArrayMesh.
 	Vertices = vertices
 	var arr_mesh = ArrayMesh.new()
@@ -65,7 +77,6 @@ func _ready():
 
 
 func _on_TextureButton_toggled(button_pressed):
-	print(button_pressed)
 	$Control/TextureButton.flip_v = button_pressed
 	$Configs.visible = button_pressed
 
@@ -167,7 +178,7 @@ func changed():
 	$Configs/minor_in.value = semi_minor
 	$Configs/Ecc_in.value = e
 	$Control/ColorPickerButton.color = color
-	var period = PlanetInfo.calc_Period(semi_major)
+	period = PlanetInfo.calc_Period(semi_major)
 	update_Mesh()
 	emit_signal("changed",name)
 
@@ -191,3 +202,65 @@ func _on_aoa_in_value_changed(value):
 func _on_Incl_in_value_changed(value):
 	incl = value
 	changed()
+
+func update_postion(delta):
+	time += delta
+	if time > period:
+		orbit_steps += period/PlanetInfo.rotation_period*2*PI
+		emit_signal("changed",name)
+	time = fmod(time,period)
+	pos = searchpos(complete_area*float(time)/period)
+	
+func searchpos(area):
+	var start = 0
+	var end = len(delta_area)
+	while end-start>1:
+		var probe_pos = (start+end)/2
+		if delta_area[probe_pos]>area:
+			end = probe_pos-1
+		else:
+			start = probe_pos
+	return start
+
+func calc_groundpath():
+	var points_out = []
+	var points_in = points
+	for j in range(2):
+		for i in range(len(points)):
+			var ind_1 = (i + pos_offset)%point_count
+			var o_1 = (i + pos_offset)/point_count
+			var ind_2 = (i + 1 + pos_offset)%point_count
+			var o_2 = (i + 1 + pos_offset)/point_count
+			var p1 = to_2d(points[ind_1])
+			var p2 = to_2d(points[ind_2])
+			p1.x = p1.x + PlanetInfo.base_angle - (delta_area[ind_1]/complete_area+j+o_1)*period/PlanetInfo.rotation_period*2*PI - orbit_steps
+			p2.x = p2.x + PlanetInfo.base_angle - (delta_area[ind_2]/complete_area+j+o_2)*period/PlanetInfo.rotation_period*2*PI - orbit_steps
+			p2.x = fposmod(p2.x,2*PI)
+			p1.x = fposmod(p1.x,2*PI)
+			p1 = p1 * Vector2(1024.0/(2*PI),512.0/(PI))
+			p2 = p2 * Vector2(1024.0/(2*PI),512.0/(PI))
+			points_out.append(p1)
+			points_out.append(p2)
+	return points_out
+
+func to_2d(point):
+	var point_in  = point.normalized()
+	var lng = fposmod(atan2(point_in.x,point_in.z),2*PI)
+	var lat = -asin(point_in.y)
+	return Vector2(lng,lat)
+
+func current_pos_2d():
+	var pos_2d = to_2d(points[get_pos()])
+	pos_2d.x += PlanetInfo.base_angle - (delta_area[get_pos()]/complete_area)*period/PlanetInfo.rotation_period*2*PI - orbit_steps
+	pos_2d.x += ((pos+pos_offset)/point_count)*period/PlanetInfo.rotation_period*2*PI
+	pos_2d.x = fposmod(pos_2d.x,2*PI)
+	pos_2d = pos_2d * Vector2(1024.0/(2*PI),512.0/(PI))
+	return pos_2d
+
+func get_pos():
+	return (pos_offset+pos)%point_count
+
+func _on_pos_in_value_changed(value):
+	pos_offset = int(value*point_count/360)
+	changed()
+	

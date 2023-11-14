@@ -8,7 +8,7 @@ var orbits = Dictionary()
 # Declare member variables here. Examples:
 # var a = 2
 # var b = \"text\"
-
+var positions = Dictionary()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,11 +20,15 @@ func _ready():
 #	pass
 func remove_orbit(name):
 	orbits.erase(name)
+	positions.erase(name)
 	update()
 func update_orbit(name,color,points):
 	orbits[name] = [color,points]
 	update()
-
+func show_satelite(name,pos,color):
+	positions[name] = [pos,color]
+	update()
+	
 func _draw():
 	#draw_line(Vector2(0,0),Vector2(1000,1000),Color.blue,20)
 	for data in orbits:
@@ -47,6 +51,10 @@ func _draw():
 					else:
 						draw_circle(p1,1.5,color)
 						draw_circle(p2,1.5,color)
+	for position in positions:
+		var pos = positions[position][0]
+		var col = positions[position][1]
+		draw_circle(pos+Vector2(0,300),5,col)
 "
 
 [sub_resource type="GDScript" id=1]

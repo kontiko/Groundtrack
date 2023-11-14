@@ -21,7 +21,15 @@ var orbit_count = 0
 func _ready():
 	pass # Replace with function body.
 
-
+func _process(delta):
+	if not $HSplitContainer/View_Container/HBoxContainer/TextureButton.pressed:
+		return
+	var time = delta*1000
+	for orbit in $\"%Orbit_Container\".get_children():
+		orbit.update_postion(time)
+		var orbit_3d = $\"%3d_View\".find_node(orbit.name, true, false)
+		orbit_3d.set_preview(orbit.get_pos())
+		$\"%2D_View\".show_satelite(orbit.name,orbit.current_pos_2d(),orbit.color)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
@@ -30,9 +38,10 @@ func changed_orbit(name):
 	var orbit_3d = $\"%3d_View\".find_node(name, true, false)
 	orbit_3d.mesh = orbit_conf.mesh
 	orbit_3d.points = orbit_conf.points
-	orbit_3d.set_preview(0)
-	var points = calc_groundpath(orbit_conf.semi_major,orbit_conf.Vertices)
+	orbit_3d.set_preview(orbit_conf.get_pos())
+	var points = orbit_conf.calc_groundpath()
 	$\"%2D_View\".update_orbit(name,orbit_conf.color,points)
+	$\"%2D_View\".show_satelite(name,orbit_conf.current_pos_2d(),orbit_conf.color)
 
 func orbit_delete(name):
 	var orbit_3d = $\"%3d_View\".find_node(name, true, false)
@@ -51,46 +60,18 @@ func _on_Add_orbit_Button_pressed():
 	mesh.mesh = ctrl.mesh
 	mesh.points = ctrl.points
 	mesh.name = ctrl.name
-	mesh.set_preview(0)
+	mesh.set_preview(ctrl.get_pos())
 	$\"%3d_View\".add_child(mesh)
-	var points = calc_groundpath(ctrl.semi_major,ctrl.Vertices)
+	var points = ctrl.calc_groundpath()
 	$\"%2D_View\".update_orbit(ctrl.name,Color.cyan,points)
 
 
 
-func calc_groundpath(semi_major,points):
-	var T = 2*PI*sqrt(pow(semi_major,3)/398600.4)
-	var area = 0
-	var rot_earth = 2*PI/86164
-	#Calculate area of complete ellipse to calculate the time/area constant
-	for i in range(0,len(points),2):
-		area += points[i].cross(points[i+1]).length()/2
-	var tpa = T/area
-	var area_gone = 0
-	var points_out = []
-	var points_in = points+points
-	for i in range(0,len(points_in),2):
-		var p1 = to_2d(points_in[i])
-		p1.x = p1.x - rot_earth*area_gone*tpa
-		p1.x = fposmod(p1.x,2*PI)
-		area_gone += points_in[i].cross(points_in[i+1]).length()/2
-		var p2 = to_2d(points_in[i+1])
-		p2.x = p2.x - rot_earth*area_gone*tpa
-		p2.x = fposmod(p2.x,2*PI)
-		p1 = p1 * Vector2(1024.0/(2*PI),512.0/(PI))
-		p2 = p2 * Vector2(1024.0/(2*PI),512.0/(PI))
-		points_out.append(p1)
-		points_out.append(p2)
-	#points_out.resize(1800)
-	return points_out
-	
 
 	
-func to_2d(point):
-	var point_in  = point.normalized()
-	var lng = fposmod(atan2(point_in.x,point_in.z),2*PI)
-	var lat = -asin(point_in.y)
-	return Vector2(lng,lat)
+func cal_pos_2d(coordinates):
+	pass
+	
 "
 
 [sub_resource type="DynamicFont" id=1]
@@ -201,6 +182,7 @@ margin_bottom = 33.0
 [node name="TextureButton" type="TextureButton" parent="HSplitContainer/View_Container/HBoxContainer"]
 margin_right = 32.0
 margin_bottom = 33.0
+toggle_mode = true
 texture_normal = ExtResource( 2 )
 
 [node name="Button" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
