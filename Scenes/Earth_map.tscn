@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://resources/2k_earth_daymap.jpg" type="Texture" id=1]
+[ext_resource path="res://Scenes/Orbit_paths.gd" type="Script" id=2]
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends Node2D
@@ -9,7 +10,7 @@ var orbits = Dictionary()
 # var a = 2
 # var b = \"text\"
 var positions = Dictionary()
-
+onready var orbit_paths = $Orbit_paths
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -19,38 +20,18 @@ func _ready():
 #func _process(delta):
 #	pass
 func remove_orbit(name):
-	orbits.erase(name)
+	orbit_paths.orbits.erase(name)
 	positions.erase(name)
 	update()
+	orbit_paths.update()
 func update_orbit(name,color,points):
-	orbits[name] = [color,points]
-	update()
+	orbit_paths.orbits[name] = [color,points]
+	orbit_paths.update()
 func show_satelite(name,pos,color):
 	positions[name] = [pos,color]
 	update()
 	
 func _draw():
-	#draw_line(Vector2(0,0),Vector2(1000,1000),Color.blue,20)
-	for data in orbits:
-		var color = orbits[data][0]
-		var point_set = orbits[data][1]
-		for i in range(0,len(point_set)-1,2):
-			var p1 = point_set[i]+Vector2(0,300)
-			var p2 = point_set[i+1]+Vector2(0,300)
-			if abs(p1.x-p2.x)>512:
-				#switch p1 and p2 if p1 the bigger point
-				if p1.x>500:
-					var p = p1
-					p1 = p2
-					p2 = p
-				draw_line(p2,p1+Vector2(1024,0),color,3)
-				draw_line(p2-Vector2(1024,0),p1,color,3)
-			else:
-					if p1.distance_to(p2)>0.1:
-						draw_line(p1,p2,color,3)
-					else:
-						draw_circle(p1,1.5,color)
-						draw_circle(p2,1.5,color)
 	for position in positions:
 		var pos = positions[position][0]
 		var col = positions[position][1]
@@ -93,3 +74,6 @@ texture = ExtResource( 1 )
 position = Vector2( 512, 300 )
 current = true
 script = SubResource( 1 )
+
+[node name="Orbit_paths" type="Node2D" parent="."]
+script = ExtResource( 2 )

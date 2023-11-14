@@ -10,7 +10,7 @@ export (float) var e
 var points = PoolVector3Array()
 var mesh
 var Vertices
-var point_count = 3600
+var point_count = 7200
 var reference_radius = 6371
 var color = Color.green
 var aop = 0.0
@@ -210,11 +210,12 @@ func update_postion(delta):
 		emit_signal("changed",name)
 	time = fmod(time,period)
 	pos = searchpos(complete_area*float(time)/period)
-	
 func searchpos(area):
 	var start = 0
 	var end = len(delta_area)
+	var i = 0
 	while end-start>1:
+		i = i+1
 		var probe_pos = (start+end)/2
 		if delta_area[probe_pos]>area:
 			end = probe_pos-1
@@ -241,7 +242,12 @@ func calc_groundpath():
 			p2 = p2 * Vector2(1024.0/(2*PI),512.0/(PI))
 			points_out.append(p1)
 			points_out.append(p2)
-	return points_out
+	var low_res = []
+	var point_steps = point_count/360
+	for i in range(0,len(points_out),point_steps):
+		low_res.append(points_out[i+0])
+		low_res.append(points_out[i+point_steps-1])
+	return low_res
 
 func to_2d(point):
 	var point_in  = point.normalized()
@@ -262,5 +268,4 @@ func get_pos():
 
 func _on_pos_in_value_changed(value):
 	pos_offset = int(value*point_count/360)
-	changed()
 	
