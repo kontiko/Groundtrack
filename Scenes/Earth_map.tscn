@@ -45,7 +45,8 @@ func _draw():
 					if p1.distance_to(p2)>0.1:
 						draw_line(p1,p2,color,3)
 					else:
-						draw_circle(p1,3,color)
+						draw_circle(p1,1.5,color)
+						draw_circle(p2,1.5,color)
 "
 
 [sub_resource type="GDScript" id=1]
