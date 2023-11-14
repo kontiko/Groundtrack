@@ -16,7 +16,7 @@ var color = Color.green
 var aop = 0.0
 var incl = 0.0
 var aoa = 0.0
-
+var period = 0
 
 
 func update_Mesh():
@@ -31,7 +31,6 @@ func update_Mesh():
 		point_list.push_back(point)
 		last_point = point
 	points = point_list
-	#vertices.push_back(Vector3(0, 0, 1))
 	# Initialize the ArrayMesh.
 	Vertices = vertices
 	var arr_mesh = ArrayMesh.new()
@@ -168,6 +167,7 @@ func changed():
 	$Configs/minor_in.value = semi_minor
 	$Configs/Ecc_in.value = e
 	$Control/ColorPickerButton.color = color
+	var period = PlanetInfo.calc_Period(semi_major)
 	update_Mesh()
 	emit_signal("changed",name)
 

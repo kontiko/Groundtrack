@@ -42,7 +42,10 @@ func _draw():
 				draw_line(p2,p1+Vector2(1024,0),color,3)
 				draw_line(p2-Vector2(1024,0),p1,color,3)
 			else:
-				draw_line(p1,p2,color,3)
+					if p1.distance_to(p2)>0.1:
+						draw_line(p1,p2,color,3)
+					else:
+						draw_circle(p1,3,color)
 "
 
 [sub_resource type="GDScript" id=1]
