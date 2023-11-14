@@ -10,9 +10,13 @@ config_version=4
 
 [application]
 
-config/name="Testproject"
-run/main_scene="res://Main.tscn"
-config/icon="res://icon.png"
+config/name="Groundtrack"
+run/main_scene="res://Scenes/Main.tscn"
+config/icon="res://resources/icon.png"
+
+[autoload]
+
+PlanetInfo="*res://Scenes/Planet_Info.tscn"
 
 [display]
 

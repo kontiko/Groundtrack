@@ -7,7 +7,8 @@ export var apoapsis = 100.0
 export (float) var semi_major 
 export (float) var semi_minor 
 export (float) var e 
-var Points = PoolVector3Array()
+var points = PoolVector3Array()
+var mesh
 var Vertices
 var point_count = 3600
 var reference_radius = 6371
@@ -17,11 +18,19 @@ var incl = 0.0
 var aoa = 0.0
 
 
+
 func update_Mesh():
 	var vertices = PoolVector3Array()
-	for i in range(point_count):
-		vertices.push_back(calc_vec(float(i)/point_count*2*PI))
-		vertices.push_back(calc_vec(float(i+1)/point_count*2*PI))
+	var point_list = PoolVector3Array()
+	var last_point = calc_vec(0)
+	point_list.push_back(last_point)
+	for i in range(1,point_count):
+		var point = calc_vec(float(i)/point_count*2*PI)
+		vertices.push_back(last_point)
+		vertices.push_back(point)
+		point_list.push_back(point)
+		last_point = point
+	points = point_list
 	#vertices.push_back(Vector3(0, 0, 1))
 	# Initialize the ArrayMesh.
 	Vertices = vertices
@@ -35,11 +44,11 @@ func update_Mesh():
 	mat.albedo_color = color
 	for surface in arr_mesh.get_surface_count():
 		arr_mesh.surface_set_material(surface,mat)
-	Points = arr_mesh
+	mesh = arr_mesh
 
 func calc_vec(angle: float):
 	var vec = Vector3(semi_major*sin(angle)/1000.0,0,semi_minor*cos(angle)/1000.0)
-	vec = vec-Vector3((semi_major-periapsis-6000)/1000.0,0,0)
+	vec = vec-Vector3((semi_major-periapsis-reference_radius)/1000.0,0,0)
 	vec = vec.rotated(Vector3(0,1,0),aop/180.0*PI)
 	vec = vec.rotated(Vector3(0,0,-1),incl/180.0*PI)
 	vec = vec.rotated(Vector3(0,1,0),aoa/180.0*PI)

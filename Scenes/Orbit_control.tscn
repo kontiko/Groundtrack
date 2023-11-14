@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://icons8-arrow-down-32.png" type="Texture" id=1]
+[ext_resource path="res://resources/icons8-arrow-down-32.png" type="Texture" id=1]
 [ext_resource path="res://DarkTheme/Fonts/Ubuntu-L.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://Orbit_control.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Orbit_control.gd" type="Script" id=3]
 
 [sub_resource type="DynamicFont" id=2]
 size = 17
