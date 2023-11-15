@@ -58,11 +58,11 @@ func update_Mesh():
 	mesh = arr_mesh
 
 func calc_vec(angle: float):
-	angle = fposmod(angle+PI,2*PI)
+	#angle = fposmod(angle+PI,2*PI)
 	var vec = Vector3(semi_minor*sin(angle)/1000.0,0,semi_major*cos(angle)/1000.0)
-	vec = vec+Vector3(0,0,(semi_major-periapsis-reference_radius)/1000.0)
+	vec = vec-Vector3(0,0,(semi_major-periapsis-reference_radius)/1000.0)
 	vec = vec.rotated(Vector3(0,1,0),aop/180.0*PI)
-	vec = vec.rotated(Vector3(0,0,-1),incl/180.0*PI)
+	vec = vec.rotated(Vector3(0,0,1),incl/180.0*PI)
 	vec = vec.rotated(Vector3(0,1,0),aoa/180.0*PI)
 	return vec
 # Called when the node enters the scene tree for the first time.
