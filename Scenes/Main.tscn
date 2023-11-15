@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://DarkTheme/Fonts/Ubuntu-L.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://resources/icons8-arrow-down-32.png" type="Texture" id=2]
+[ext_resource path="res://resources/icons8-play-32.png" type="Texture" id=2]
 [ext_resource path="res://DarkTheme/Dark.theme" type="Theme" id=3]
 [ext_resource path="res://Scenes/Orbit_control.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scenes/Earth_map.tscn" type="PackedScene" id=5]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Scenes/Spatial.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/Time_Ctrl.gd" type="Script" id=8]
 [ext_resource path="res://Scenes/SpinBox.tscn" type="PackedScene" id=9]
+[ext_resource path="res://resources/icons8-pause-32.png" type="Texture" id=10]
 
 [sub_resource type="GDScript" id=3]
 script/source = "extends Control
@@ -294,6 +295,7 @@ margin_right = 32.0
 margin_bottom = 33.0
 toggle_mode = true
 texture_normal = ExtResource( 2 )
+texture_pressed = ExtResource( 10 )
 
 [node name="50x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
 margin_left = 35.0
