@@ -28,6 +28,16 @@ func zoom_out():
 
 func rotate_by(x,y):
 	$Camera_helper.rotation_degrees = $Camera_helper.rotation_degrees + Vector3(x,y,0)
+
+func set_sun_angle(unix):
+	var dt = fposmod(unix-PlanetInfo.solstice_unix_offset,PlanetInfo.period)
+	var angle = 360*dt/PlanetInfo.period
+	var time = Time.get_time_dict_from_unix_time(unix)
+	var earth_rot = (float(time.hour)/24.0
+					+float(time.minute)/1440.0
+					+float(time.second)/86400)*360
+	$Earth.rotation_degrees.y = angle + earth_rot
+	$Tilt/Sun_orbit.rotation_degrees.y = angle
 "
 
 [sub_resource type="SphereMesh" id=2]
@@ -54,12 +64,12 @@ mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
 [node name="Tilt" type="Spatial" parent="."]
-transform = Transform( 0.920505, -0.390731, 0, 0.390731, 0.920505, 0, 0, 0, 1, 0, 0, 0 )
+transform = Transform( 0.920505, 0.390731, 0, -0.390731, 0.920505, 0, 0, 0, 1, 0, 0, 0 )
 
-[node name="Camera_helper2" type="Spatial" parent="Tilt"]
+[node name="Sun_orbit" type="Spatial" parent="Tilt"]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
 
-[node name="DirectionalLight" type="DirectionalLight" parent="Tilt/Camera_helper2"]
+[node name="DirectionalLight" type="DirectionalLight" parent="Tilt/Sun_orbit"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30 )
 
 [node name="Camera_helper" type="Spatial" parent="."]

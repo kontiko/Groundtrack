@@ -52,7 +52,7 @@ margin_top = 5.0
 margin_right = 246.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
-text = "Apoapsis"
+text = "apoapsis"
 align = 2
 
 [node name="apo_in" type="SpinBox" parent="Configs"]
@@ -68,7 +68,7 @@ margin_top = 33.0
 margin_right = 246.0
 margin_bottom = 47.0
 size_flags_horizontal = 3
-text = "Periapsis"
+text = "periapsis"
 align = 2
 
 [node name="peri_in" type="SpinBox" parent="Configs"]
@@ -85,7 +85,7 @@ margin_top = 61.0
 margin_right = 246.0
 margin_bottom = 75.0
 size_flags_horizontal = 3
-text = "Semi Major Axis"
+text = "semi major axis"
 align = 2
 
 [node name="major_in" type="SpinBox" parent="Configs"]
@@ -102,7 +102,7 @@ margin_top = 89.0
 margin_right = 246.0
 margin_bottom = 103.0
 size_flags_horizontal = 3
-text = "Semi Minor Axis"
+text = "semi minor axis"
 align = 2
 
 [node name="minor_in" type="SpinBox" parent="Configs"]
@@ -119,7 +119,7 @@ margin_top = 117.0
 margin_right = 246.0
 margin_bottom = 131.0
 size_flags_horizontal = 3
-text = "Eccentricity"
+text = "eccentricity"
 align = 2
 
 [node name="Ecc_in" type="SpinBox" parent="Configs"]
@@ -136,7 +136,7 @@ margin_top = 145.0
 margin_right = 246.0
 margin_bottom = 159.0
 size_flags_horizontal = 3
-text = "Inklination"
+text = "inclination"
 align = 2
 
 [node name="Incl_in" type="SpinBox" parent="Configs"]
@@ -154,7 +154,7 @@ margin_top = 173.0
 margin_right = 246.0
 margin_bottom = 187.0
 size_flags_horizontal = 3
-text = "Angle of Asc. Node"
+text = "Longitude of asc. Node"
 align = 2
 
 [node name="aoa_in" type="SpinBox" parent="Configs"]
@@ -171,7 +171,7 @@ margin_top = 201.0
 margin_right = 246.0
 margin_bottom = 215.0
 size_flags_horizontal = 3
-text = "argument of periapsis"
+text = "Argument of periapsis"
 align = 2
 
 [node name="aop_in" type="SpinBox" parent="Configs"]
@@ -188,7 +188,7 @@ margin_top = 229.0
 margin_right = 246.0
 margin_bottom = 243.0
 size_flags_horizontal = 3
-text = "Position"
+text = "True anomaly"
 align = 2
 
 [node name="pos_in" type="SpinBox" parent="Configs"]

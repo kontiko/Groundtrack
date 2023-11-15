@@ -20,6 +20,8 @@ PlanetInfo="*res://Scenes/Planet_Info.tscn"
 
 [display]
 
+window/size/width=1280
+window/size/height=720
 window/stretch/aspect="keep_width"
 
 [gui]
