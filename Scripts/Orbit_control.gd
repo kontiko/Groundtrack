@@ -59,8 +59,8 @@ func update_Mesh():
 
 func calc_vec(angle: float):
 	angle = fposmod(angle+PI,2*PI)
-	var vec = Vector3(semi_major*sin(angle)/1000.0,0,semi_minor*cos(angle)/1000.0)
-	vec = vec-Vector3((semi_major-periapsis-reference_radius)/1000.0,0,0)
+	var vec = Vector3(semi_minor*sin(angle)/1000.0,0,semi_major*cos(angle)/1000.0)
+	vec = vec+Vector3(0,0,(semi_major-periapsis-reference_radius)/1000.0)
 	vec = vec.rotated(Vector3(0,1,0),aop/180.0*PI)
 	vec = vec.rotated(Vector3(0,0,-1),incl/180.0*PI)
 	vec = vec.rotated(Vector3(0,1,0),aoa/180.0*PI)
@@ -190,7 +190,7 @@ func _on_Button_pressed():
 
 func _on_pos_in_value_changed(value):
 	pos = int(value*point_count/360)
-	time = delta_area[pos]/complete_area*period
+	last_orbit = time - delta_area[pos]/complete_area*period
 	emit_signal("changed",name)
 
 ###############################################################################
@@ -198,11 +198,11 @@ func _on_pos_in_value_changed(value):
 ###############################################################################
 
 func changed():
-	$Configs/apo_in.value = apoapsis
-	$Configs/peri_in.value = periapsis
-	$Configs/major_in.value = semi_major
-	$Configs/minor_in.value = semi_minor
-	$Configs/Ecc_in.value = e
+	$Configs/apo_in.set_value_code(apoapsis)
+	$Configs/peri_in.set_value_code(periapsis)
+	$Configs/major_in.set_value_code(semi_major)
+	$Configs/minor_in.set_value_code(semi_minor)
+	$Configs/Ecc_in.set_value_code(e)
 	$Control/ColorPickerButton.color = color
 	period = PlanetInfo.calc_Period(semi_major)
 	update_Mesh()
@@ -223,7 +223,7 @@ func update_postion(unix):
 	if changed:
 		emit_signal("changed",name)
 	pos = searchpos(complete_area*float(time-last_orbit)/period)
-	$Configs/pos_in.get_line_edit().text = str(pos*360.0/point_count)
+	$Configs/pos_in.set_value_code(pos*360.0/point_count)
 
 func orbit_step():
 	var dt = fposmod(last_orbit-PlanetInfo.solstice_unix_offset,PlanetInfo.period)
