@@ -64,7 +64,7 @@ mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
 [node name="Tilt" type="Spatial" parent="."]
-transform = Transform( 0.920505, 0.390731, 0, -0.390731, 0.920505, 0, 0, 0, 1, 0, 0, 0 )
+transform = Transform( 0.917755, -0.397148, 0, 0.397148, 0.917755, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="Sun_orbit" type="Spatial" parent="Tilt"]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )

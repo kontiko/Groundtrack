@@ -16,7 +16,7 @@ export (PackedScene) var Orbit_control
 export (PackedScene) var Orbit_3D
 # Declare member variables here. Examples:
 # var a = 2
-# var b = \"text\"
+var speed = 50
 var unix_time = Time.get_unix_time_from_system()
 var orbit_count = 0
 # Called when the node enters the scene tree for the first time.
@@ -27,7 +27,7 @@ func _ready():
 func _process(delta):
 	if not $HSplitContainer/View_Container/HBoxContainer/TextureButton.pressed:
 		return
-	var time = delta*500.0
+	var time = delta*speed
 	time_step(time)
 
 
@@ -82,6 +82,26 @@ func _on_Time_Container_time_changed(time):
 	time_step(delta_t)
 
 
+
+
+func _on_50x_pressed():
+	speed = 50
+
+
+func _on_100x_pressed():
+	speed = 100
+
+
+func _on_1000x_pressed():
+	speed = 1000
+
+
+func _on_10000x_pressed():
+	speed = 10000
+
+
+func _on_100000x_pressed():
+	speed = 100000
 "
 
 [sub_resource type="DynamicFont" id=1]
@@ -275,59 +295,42 @@ margin_bottom = 33.0
 toggle_mode = true
 texture_normal = ExtResource( 2 )
 
-[node name="Button" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
+[node name="50x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
 margin_left = 35.0
-margin_right = 65.0
-margin_bottom = 33.0
-toggle_mode = true
-group = SubResource( 4 )
-text = "1x"
-
-[node name="Button2" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
-margin_left = 68.0
-margin_right = 98.0
-margin_bottom = 33.0
-rect_pivot_offset = Vector2( 658, 462 )
-toggle_mode = true
-group = SubResource( 4 )
-text = "5x"
-
-[node name="Button3" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
-margin_left = 101.0
-margin_right = 145.0
-margin_bottom = 33.0
-toggle_mode = true
-group = SubResource( 4 )
-text = "10x"
-
-[node name="Button4" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
-margin_left = 148.0
-margin_right = 192.0
+margin_right = 79.0
 margin_bottom = 33.0
 toggle_mode = true
 pressed = true
 group = SubResource( 4 )
 text = "50x"
 
-[node name="Button5" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
-margin_left = 195.0
-margin_right = 253.0
+[node name="100x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
+margin_left = 82.0
+margin_right = 140.0
 margin_bottom = 33.0
 toggle_mode = true
 group = SubResource( 4 )
 text = "100x"
 
-[node name="Button6" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
-margin_left = 256.0
-margin_right = 328.0
+[node name="1000x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
+margin_left = 143.0
+margin_right = 215.0
 margin_bottom = 33.0
 toggle_mode = true
 group = SubResource( 4 )
 text = "1000x"
 
-[node name="Button7" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
-margin_left = 331.0
-margin_right = 417.0
+[node name="10000x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
+margin_left = 218.0
+margin_right = 304.0
+margin_bottom = 33.0
+toggle_mode = true
+group = SubResource( 4 )
+text = "10000x"
+
+[node name="100000x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
+margin_left = 307.0
+margin_right = 393.0
 margin_bottom = 33.0
 toggle_mode = true
 group = SubResource( 4 )
@@ -389,3 +392,8 @@ unique_name_in_owner = true
 [connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Minute" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Minute_value_changed"]
 [connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Second" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Second_value_changed"]
 [connection signal="pressed" from="HSplitContainer/Left_Organize/Add_orbit_Button" to="." method="_on_Add_orbit_Button_pressed"]
+[connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/50x" to="." method="_on_50x_pressed"]
+[connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/100x" to="." method="_on_100x_pressed"]
+[connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/1000x" to="." method="_on_1000x_pressed"]
+[connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/10000x" to="." method="_on_10000x_pressed"]
+[connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/100000x" to="." method="_on_100000x_pressed"]
