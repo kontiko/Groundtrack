@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Camera.gd" type="Script" id=2]
 [ext_resource path="res://resources/2k_earth_daymap.jpg" type="Texture" id=3]
@@ -12,7 +12,8 @@ script/source = "extends Spatial
 # var a = 2
 # var b = \"text\"
 var zoom_factor = 1.1
-
+var lat = 53.075833/180.0*PI
+var lng = 8.807222/180.0*PI
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -38,6 +39,9 @@ func set_sun_angle(unix):
 					+float(time.second)/86400)*360
 	$Earth.rotation_degrees.y = angle + earth_rot
 	$Tilt/Sun_orbit.rotation_degrees.y = angle
+	var ground_pos = PI + (angle + earth_rot)/180.0*PI+ lng
+	var position = Vector3(0,0,6.3).rotated(Vector3(1,0,0),-lat).rotated(Vector3(0,1,0),ground_pos)
+	$MeshInstance.translation = position.rotated(Vector3(0,1,0),-ground_pos).rotated(Vector3(1,0,0),lat)
 "
 
 [sub_resource type="SphereMesh" id=2]
@@ -55,6 +59,10 @@ background_mode = 1
 background_sky = SubResource( 7 )
 ambient_light_color = Color( 1, 1, 1, 1 )
 ambient_light_energy = 0.05
+
+[sub_resource type="SphereMesh" id=8]
+radius = 0.1
+height = 0.2
 
 [node name="Spatial" type="Spatial"]
 script = SubResource( 5 )
@@ -83,3 +91,12 @@ script = ExtResource( 2 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 6 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3, 0, 0 )
+mesh = SubResource( 8 )
+
+[node name="x reference" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.6 )
+mesh = SubResource( 8 )
+skeleton = NodePath("../MeshInstance")

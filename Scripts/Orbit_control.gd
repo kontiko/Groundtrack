@@ -216,7 +216,7 @@ func update_postion(unix):
 	while last_orbit + period < unix:
 		changed = true
 		last_orbit += period
-	while last_orbit - period > unix:
+	while unix < last_orbit :
 		changed = true
 		last_orbit -= period
 		#orbit_steps += period/PlanetInfo.rotation_period*2*PI

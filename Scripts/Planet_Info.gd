@@ -23,4 +23,3 @@ func _ready():
 
 func calc_Period(semi_major):
 	return 2*PI*sqrt(pow(semi_major*1000,3)/(Mass*grav_const))
-

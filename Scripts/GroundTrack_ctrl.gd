@@ -1,0 +1,68 @@
+extends VBoxContainer
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
+var lat = 53.075833/180.0*PI
+var lng = 8.807222/180.0*PI
+#maximum angle to zenith at which an overflight gets registered
+var observation_angle = 45
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+var thread
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+func calc_observations(preview_window):
+	var overflights = []
+	var current_overflight = null
+	for orbit in $"%Orbit_Container".get_children():
+		var pos = orbit.pos 
+		var start_time = orbit.last_orbit
+		var sim_time = orbit.time
+		var final_time = sim_time + preview_window
+		while sim_time < final_time:
+			var  orbit_pos: Vector3 = orbit.points[pos%orbit.point_count]
+			var rotations = pos/orbit.point_count
+			#calculate rotation from earth
+			var dt = fposmod(sim_time-PlanetInfo.solstice_unix_offset,PlanetInfo.period)
+			var sun_angle = 2*PI*dt/PlanetInfo.period
+			var time_dict = Time.get_time_dict_from_unix_time(int(sim_time))
+			var earth_rot = (float(time_dict.hour)/24.0
+					+float(time_dict.minute)/1440.0
+					+float(time_dict.second)/86400)*2*PI
+			var rot = earth_rot + sun_angle + lng + PI
+			#Transform the points so that the observation point lies at the origin and looks in the direction of the x axis
+			var over_ground = orbit_pos.rotated(Vector3(0,1,0),-rot).rotated(Vector3(1,0,0),lat)- Vector3(0,0,PlanetInfo.radius/1000.0)
+			var zenith_angle = over_ground.angle_to(Vector3(0,0,1))*180.0/PI
+			#if the angle is 
+			if zenith_angle>observation_angle:
+				if current_overflight != null:
+					current_overflight["end"] = sim_time
+					overflights.append(current_overflight)
+					current_overflight = null
+			else:
+				var altitude = 90.0 - zenith_angle
+				if current_overflight != null:
+					if altitude > current_overflight["altitude"]:
+						current_overflight["altitude"]= altitude
+				else:
+					current_overflight = Dictionary()
+					current_overflight["name"] = orbit.name
+					current_overflight["start"] = sim_time
+					current_overflight["altitude"] = altitude
+			pos += 1
+			sim_time = start_time + orbit.period*(pos/orbit.point_count
+								  + orbit.delta_area[pos%orbit.point_count]/orbit.complete_area)
+		if current_overflight != null:
+					current_overflight["end"] = sim_time
+					overflights.append(current_overflight)
+					current_overflight = null
+	print(overflights)
+
+
+func _on_Button_pressed():
+	calc_observations(604800.0)
