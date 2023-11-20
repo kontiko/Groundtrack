@@ -59,6 +59,7 @@ align = 2
 [node name="apo_in" parent="Configs" instance=ExtResource( 4 )]
 margin_left = 422.0
 margin_right = 496.0
+step = 0.001
 value = 100.0
 allow_greater = true
 allow_lesser = true
@@ -76,6 +77,7 @@ margin_left = 422.0
 margin_top = 28.0
 margin_right = 496.0
 margin_bottom = 52.0
+step = 0.001
 value = 100.0
 allow_greater = true
 allow_lesser = true
@@ -94,6 +96,7 @@ margin_top = 56.0
 margin_right = 496.0
 margin_bottom = 80.0
 max_value = 0.0
+step = 0.001
 allow_greater = true
 
 [node name="Label_minor" type="Label" parent="Configs"]
@@ -110,6 +113,7 @@ margin_top = 84.0
 margin_right = 496.0
 margin_bottom = 108.0
 max_value = 0.0
+step = 0.001
 allow_greater = true
 
 [node name="Label_Ecc" type="Label" parent="Configs"]
