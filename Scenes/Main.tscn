@@ -43,6 +43,7 @@ func time_step(time):
 		var orbit_3d = $\"%3d_View\".find_node(orbit.name, true, false)
 		orbit_3d.set_preview(orbit.pos)
 		$\"%2D_View\".show_satelite(orbit.name,orbit.current_pos_2d(),orbit.color)
+	$\"%Tracking\".calculate_current_orbits()
 
 
 func changed_orbit(name):
@@ -293,6 +294,7 @@ size_flags_vertical = 0
 text = "Add Orbit"
 
 [node name="Tracking" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
+unique_name_in_owner = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0

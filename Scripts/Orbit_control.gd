@@ -232,6 +232,7 @@ func orbit_step():
 					+float(time_dict.minute)/1440.0
 					+float(time_dict.second)/86400)*2*PI
 	return earth_rot + angle + PI/2
+
 #Find Current Positional index By Area gone with the helo of binary search
 func searchpos(area):
 	var start = 0
@@ -284,9 +285,6 @@ func to_2d(point):
 func current_pos_2d():
 	var pos_2d = to_2d(points[pos])
 	pos_2d.x += PlanetInfo.base_angle - (delta_area[pos]/complete_area)*period/PlanetInfo.rotation_period*2*PI - orbit_step()
-	pos_2d.x += ((pos)/point_count)*period/PlanetInfo.rotation_period*2*PI
 	pos_2d.x = fposmod(pos_2d.x,2*PI)
 	pos_2d = pos_2d * Vector2(1024.0/(2*PI),512.0/(PI))
 	return pos_2d
-
-

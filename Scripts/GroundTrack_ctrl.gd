@@ -12,7 +12,6 @@ var observation_angle = 70
 func _ready():
 	pass # Replace with function body.
 
-var thread
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
@@ -65,6 +64,22 @@ func calculate_projection(point,time):
 	var rot = earth_rot + sun_angle + lng + PI
 	#Transform the points so that the observation point lies at the origin and looks in the direction of the x axis
 	return point.rotated(Vector3(0,1,0),-rot).rotated(Vector3(1,0,0),lat)- Vector3(0,0,PlanetInfo.radius/1000.0)
+
+func calculate_current_orbits():
+	var positions = []
+	for orbit in $"%Orbit_Container".get_children():
+		var pos_3d = orbit.points[orbit.pos]
+		var over_ground = calculate_projection(pos_3d,orbit.time)
+		var zenith_angle = over_ground.angle_to(Vector3(0,0,1))*180.0/PI
+		if zenith_angle>90:
+			continue
+		var pos_2d = Vector2(over_ground.x,-over_ground.y).normalized()*zenith_angle
+		var data = {"position":pos_2d,"color":orbit.color}
+		positions.append(data)
+	$"%Groundtrack".positions = positions
+	$"%Groundtrack".update()
+	
+
 func update_overflight():
 	var passes = []
 	var current_pass = null

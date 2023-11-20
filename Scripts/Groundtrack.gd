@@ -26,7 +26,7 @@ func _draw():
 			draw_line(last_point*2,points[i]*2,col,2)
 			last_point = points[i]
 	for position_sat in positions:
-		draw_circle(position_sat["point"],5,position_sat["color"])
+		draw_circle(position_sat["position"]*2,5,position_sat["color"])
 	for i in range(10):
 		draw_arc(Vector2(0,0),i*20,0,2*PI,360,Color.red)
 	for i in range(8):
