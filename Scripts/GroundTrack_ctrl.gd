@@ -107,8 +107,12 @@ func _on_Button_pressed():
 
 
 func _on_Lng_in_value_changed(value):
-	var lng = value/180.0*PI
+	lng = value/180.0*PI
+	update_overflight()
+	calculate_current_orbits()
 
 
 func _on_Lat_in_value_changed(value):
-	var lat = value/180.0*PI
+	lat = value/180.0*PI
+	update_overflight()
+	calculate_current_orbits()
