@@ -42,6 +42,7 @@ texture_normal = ExtResource( 1 )
 stretch_mode = 2
 
 [node name="Configs" type="GridContainer" parent="."]
+visible = false
 margin_top = 36.0
 margin_right = 496.0
 margin_bottom = 308.0

@@ -230,7 +230,7 @@ func orbit_step():
 	var time_dict = Time.get_time_dict_from_unix_time(int(last_orbit))
 	var earth_rot = (float(time_dict.hour)/24.0
 					+float(time_dict.minute)/1440.0
-					+float(time_dict.second)/86400)*2*PI
+					+float(time_dict.second)/86400.0)*2*PI
 	return earth_rot + angle + PI/2
 
 #Find Current Positional index By Area gone with the helo of binary search
