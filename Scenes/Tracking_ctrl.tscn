@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/GroundTrack_ctrl.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/overflight_table.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/SpinBox.tscn" type="PackedScene" id=3]
 
 [node name="Tracking" type="VBoxContainer"]
@@ -48,6 +49,13 @@ margin_left = 221.0
 margin_right = 283.0
 margin_bottom = 24.0
 text = "Analyze"
+
+[node name="overflight_table" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 28.0
+margin_right = 1272.0
+margin_bottom = 28.0
 
 [connection signal="value_changed" from="HBoxContainer/Lat_in" to="." method="_on_Lat_in_value_changed"]
 [connection signal="value_changed" from="HBoxContainer/Lng_in" to="." method="_on_Lng_in_value_changed"]

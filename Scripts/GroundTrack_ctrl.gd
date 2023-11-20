@@ -1,11 +1,7 @@
 extends VBoxContainer
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-var lat = 53.075833/180.0*PI
-var lng = 8.807222/180.0*PI
+var lat = 0.0
+var lng = 0.0
 #maximum angle to zenith at which an overflight gets registered
 var observation_angle = 70
 # Called when the node enters the scene tree for the first time.
@@ -53,7 +49,7 @@ func calc_observations(preview_window):
 					current_overflight["end"] = sim_time
 					overflights.append(current_overflight)
 					current_overflight = null
-	print(overflights)
+	$overflight_table.set_table(overflights)
 func calculate_projection(point,time):
 	var dt = fposmod(time-PlanetInfo.solstice_unix_offset,PlanetInfo.period)
 	var sun_angle = 2*PI*dt/PlanetInfo.period

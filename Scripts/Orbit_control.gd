@@ -10,7 +10,7 @@ export (float) var e
 var points = PoolVector3Array()
 var mesh
 var Vertices
-var point_count = 7200
+var point_count = 7200*2
 var reference_radius = 6371
 var color = Color.green
 var aop = 0.0

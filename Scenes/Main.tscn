@@ -54,7 +54,7 @@ func changed_orbit(name):
 	orbit_3d.set_preview(orbit_conf.pos)
 	var points = orbit_conf.calc_groundpath()
 	$\"%2D_View\".update_orbit(name,orbit_conf.color,points)
-	$HSplitContainer/Left_Organize/TabContainer/Tracking.update_overflight()
+	$\"%Tracking\".update_overflight()
 	$\"%2D_View\".show_satelite(name,orbit_conf.current_pos_2d(),orbit_conf.color)
 
 func orbit_delete(name):
@@ -80,7 +80,7 @@ func _on_Add_orbit_Button_pressed():
 	$\"%3d_View\".add_child(mesh)
 	var points = ctrl.calc_groundpath()
 	$\"%2D_View\".update_orbit(ctrl.name,Color.cyan,points)
-	$HSplitContainer/Left_Organize/TabContainer/Tracking.update_overflight()
+	$\"%Tracking\".update_overflight()
 
 
 func _on_Time_Container_time_changed(time):
@@ -298,7 +298,19 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "Add Orbit"
 
-[node name="Tracking" parent="HSplitContainer/Left_Organize/TabContainer" instance=ExtResource( 11 )]
+[node name="ScrollContainer2" type="ScrollContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
+visible = false
+margin_right = 9.0
+margin_bottom = 9.0
+scroll_horizontal_enabled = false
+
+[node name="Tracking" parent="HSplitContainer/Left_Organize/TabContainer/ScrollContainer2" instance=ExtResource( 11 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 387.0
+margin_bottom = 38.0
 
 [node name="View_Container" type="VBoxContainer" parent="HSplitContainer"]
 margin_left = 643.0
