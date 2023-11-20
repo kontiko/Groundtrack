@@ -42,7 +42,7 @@ func update_Mesh():
 		delta_area.append(complete_area)
 		last_point = point
 	points = point_list
-	time = (delta_area[pos]/complete_area)*time
+	time = (delta_area[pos]/complete_area)*period+ last_orbit
 	# Initialize the ArrayMesh.
 	Vertices = vertices
 	var arr_mesh = ArrayMesh.new()
@@ -173,7 +173,6 @@ func _on_aop_in_value_changed(value):
 
 func _on_aoa_in_value_changed(value):
 	aoa = value
-	changed()
 	changed()
 
 func _on_Incl_in_value_changed(value):

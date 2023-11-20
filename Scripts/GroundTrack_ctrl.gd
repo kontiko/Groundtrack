@@ -74,7 +74,7 @@ func update_overflight():
 				var time = orbit.last_orbit + orbit.period*(j + orbit.delta_area[pos]/orbit.complete_area)
 				var over_ground = calculate_projection(orbit.points[pos],time)
 				var zenith_angle = over_ground.angle_to(Vector3(0,0,1))*180.0/PI
-				if zenith_angle<observation_angle:
+				if zenith_angle<90:
 					var direction = Vector2(over_ground.x,-over_ground.y).normalized()*zenith_angle
 					if current_pass == null:
 						current_pass = Dictionary()
