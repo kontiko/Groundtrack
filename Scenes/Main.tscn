@@ -268,7 +268,7 @@ margin_bottom = 720.0
 size_flags_vertical = 3
 tab_align = 0
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
+[node name="Orbits" type="ScrollContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -277,18 +277,18 @@ margin_right = -4.0
 margin_bottom = -4.0
 scroll_horizontal_enabled = false
 
-[node name="Orbits" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/ScrollContainer"]
+[node name="Orbits" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/Orbits"]
 margin_right = 629.0
 margin_bottom = 629.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Orbit_Container" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/ScrollContainer/Orbits"]
+[node name="Orbit_Container" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/Orbits/Orbits"]
 unique_name_in_owner = true
 margin_right = 629.0
 size_flags_horizontal = 3
 
-[node name="Add_orbit_Button" type="Button" parent="HSplitContainer/Left_Organize/TabContainer/ScrollContainer/Orbits"]
+[node name="Add_orbit_Button" type="Button" parent="HSplitContainer/Left_Organize/TabContainer/Orbits/Orbits"]
 margin_top = 3.0
 margin_right = 115.0
 margin_bottom = 36.0
@@ -298,13 +298,13 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "Add Orbit"
 
-[node name="ScrollContainer2" type="ScrollContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
+[node name="Groundstation" type="ScrollContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
 visible = false
 margin_right = 9.0
 margin_bottom = 9.0
 scroll_horizontal_enabled = false
 
-[node name="Tracking" parent="HSplitContainer/Left_Organize/TabContainer/ScrollContainer2" instance=ExtResource( 11 )]
+[node name="Tracking" parent="HSplitContainer/Left_Organize/TabContainer/Groundstation" instance=ExtResource( 11 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 0.0
@@ -445,7 +445,7 @@ position = Vector2( 651, 118 )
 [connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Hour" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Hour_value_changed"]
 [connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Minute" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Minute_value_changed"]
 [connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Second" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Second_value_changed"]
-[connection signal="pressed" from="HSplitContainer/Left_Organize/TabContainer/ScrollContainer/Orbits/Add_orbit_Button" to="." method="_on_Add_orbit_Button_pressed"]
+[connection signal="pressed" from="HSplitContainer/Left_Organize/TabContainer/Orbits/Orbits/Add_orbit_Button" to="." method="_on_Add_orbit_Button_pressed"]
 [connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/50x" to="." method="_on_50x_pressed"]
 [connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/100x" to="." method="_on_100x_pressed"]
 [connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/1000x" to="." method="_on_1000x_pressed"]

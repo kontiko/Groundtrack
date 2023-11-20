@@ -10,7 +10,7 @@ export (float) var e
 var points = PoolVector3Array()
 var mesh
 var Vertices
-var point_count = 7200*2
+var point_count = 7200
 var reference_radius = 6371
 var color = Color.green
 var aop = 0.0
@@ -249,24 +249,24 @@ func searchpos(area):
 
 #Calculate ground path
 func calc_groundpath():
+	var steps = orbit_step()
 	var points_out = []
 	var points_in = points
 	for j in range(2):
+		var last_point = to_2d(points[0])
+		last_point.x = last_point.x + PlanetInfo.base_angle - j*period/PlanetInfo.rotation_period*2*PI - steps
+		last_point.x = fposmod(last_point.x,2*PI)
+		last_point *= Vector2(1024.0/(2*PI),512.0/(PI))
 		for i in range(len(points)):
-			var ind_1 = (i )%point_count
-			var o_1 = (i )/point_count
-			var ind_2 = (i + 1 )%point_count
-			var o_2 = (i + 1 )/point_count
-			var p1 = to_2d(points[ind_1])
+			var ind_2 = (i + 1)%point_count
+			var o_2 = (i + 1)/point_count
 			var p2 = to_2d(points[ind_2])
-			p1.x = p1.x + PlanetInfo.base_angle - (delta_area[ind_1]/complete_area+j+o_1)*period/PlanetInfo.rotation_period*2*PI - orbit_step()
-			p2.x = p2.x + PlanetInfo.base_angle - (delta_area[ind_2]/complete_area+j+o_2)*period/PlanetInfo.rotation_period*2*PI - orbit_step()
+			p2.x = p2.x + PlanetInfo.base_angle - (delta_area[ind_2]/complete_area+j+o_2)*period/PlanetInfo.rotation_period*2*PI - steps
 			p2.x = fposmod(p2.x,2*PI)
-			p1.x = fposmod(p1.x,2*PI)
-			p1 = p1 * Vector2(1024.0/(2*PI),512.0/(PI))
 			p2 = p2 * Vector2(1024.0/(2*PI),512.0/(PI))
-			points_out.append(p1)
+			points_out.append(last_point)
 			points_out.append(p2)
+			last_point = p2
 	var low_res = []
 	var point_steps = point_count/360
 	for i in range(0,len(points_out),point_steps):
