@@ -23,5 +23,5 @@ func _draw():
 			continue
 		var last_point = points[0]
 		for i in range(1,len(points)):
-			draw_line(last_point,points[i],col,2)
+			draw_line(last_point*2,points[i]*2,col,2)
 			last_point = points[i]
