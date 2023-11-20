@@ -104,3 +104,11 @@ func update_overflight():
 	$"%Groundtrack".update()
 func _on_Button_pressed():
 	calc_observations(604800.0)
+
+
+func _on_Lng_in_value_changed(value):
+	var lng = value/180.0*PI
+
+
+func _on_Lat_in_value_changed(value):
+	var lat = value/180.0*PI

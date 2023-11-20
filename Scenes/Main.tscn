@@ -10,7 +10,7 @@
 [ext_resource path="res://Scenes/Time_Ctrl.gd" type="Script" id=8]
 [ext_resource path="res://Scenes/SpinBox.tscn" type="PackedScene" id=9]
 [ext_resource path="res://resources/icons8-pause-32.png" type="Texture" id=10]
-[ext_resource path="res://Scripts/GroundTrack_ctrl.gd" type="Script" id=11]
+[ext_resource path="res://Scenes/Tracking_ctrl.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Scenes/Groundtrack_view.tscn" type="PackedScene" id=12]
 
 [sub_resource type="GDScript" id=3]
@@ -268,22 +268,27 @@ margin_bottom = 720.0
 size_flags_vertical = 3
 tab_align = 0
 
-[node name="Orbits" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
 margin_top = 41.0
 margin_right = -4.0
 margin_bottom = -4.0
+scroll_horizontal_enabled = false
+
+[node name="Orbits" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/ScrollContainer"]
+margin_right = 629.0
+margin_bottom = 629.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Orbit_Container" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/Orbits"]
+[node name="Orbit_Container" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/ScrollContainer/Orbits"]
 unique_name_in_owner = true
 margin_right = 629.0
 size_flags_horizontal = 3
 
-[node name="Add_orbit_Button" type="Button" parent="HSplitContainer/Left_Organize/TabContainer/Orbits"]
+[node name="Add_orbit_Button" type="Button" parent="HSplitContainer/Left_Organize/TabContainer/ScrollContainer/Orbits"]
 margin_top = 3.0
 margin_right = 115.0
 margin_bottom = 36.0
@@ -293,54 +298,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "Add Orbit"
 
-[node name="Tracking" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
-unique_name_in_owner = true
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 41.0
-margin_right = -4.0
-margin_bottom = -4.0
-script = ExtResource( 11 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/Tracking"]
-margin_right = 629.0
-margin_bottom = 35.0
-
-[node name="Label" type="Label" parent="HSplitContainer/Left_Organize/TabContainer/Tracking/HBoxContainer"]
-margin_top = -1.0
-margin_right = 54.4
-margin_bottom = 34.4
-text = "Lat.:"
-
-[node name="SpinBox" parent="HSplitContainer/Left_Organize/TabContainer/Tracking/HBoxContainer" instance=ExtResource( 9 )]
-margin_left = 57.0
-margin_right = 143.0
-margin_bottom = 35.0
-min_value = -90.0
-max_value = 90.0
-step = 0.01
-
-[node name="Label2" type="Label" parent="HSplitContainer/Left_Organize/TabContainer/Tracking/HBoxContainer"]
-margin_left = 146.0
-margin_top = -1.0
-margin_right = 205.4
-margin_bottom = 34.4
-text = "Lng.:"
-
-[node name="SpinBox2" parent="HSplitContainer/Left_Organize/TabContainer/Tracking/HBoxContainer" instance=ExtResource( 9 )]
-margin_left = 208.0
-margin_right = 294.0
-margin_bottom = 35.0
-max_value = 360.0
-step = 0.01
-
-[node name="Button" type="Button" parent="HSplitContainer/Left_Organize/TabContainer/Tracking/HBoxContainer"]
-margin_left = 297.0
-margin_right = 387.0
-margin_bottom = 35.0
-text = "Analyze"
+[node name="Tracking" parent="HSplitContainer/Left_Organize/TabContainer" instance=ExtResource( 11 )]
 
 [node name="View_Container" type="VBoxContainer" parent="HSplitContainer"]
 margin_left = 643.0
@@ -475,8 +433,7 @@ position = Vector2( 651, 118 )
 [connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Hour" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Hour_value_changed"]
 [connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Minute" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Minute_value_changed"]
 [connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Second" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Second_value_changed"]
-[connection signal="pressed" from="HSplitContainer/Left_Organize/TabContainer/Orbits/Add_orbit_Button" to="." method="_on_Add_orbit_Button_pressed"]
-[connection signal="pressed" from="HSplitContainer/Left_Organize/TabContainer/Tracking/HBoxContainer/Button" to="HSplitContainer/Left_Organize/TabContainer/Tracking" method="_on_Button_pressed"]
+[connection signal="pressed" from="HSplitContainer/Left_Organize/TabContainer/ScrollContainer/Orbits/Add_orbit_Button" to="." method="_on_Add_orbit_Button_pressed"]
 [connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/50x" to="." method="_on_50x_pressed"]
 [connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/100x" to="." method="_on_100x_pressed"]
 [connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/1000x" to="." method="_on_1000x_pressed"]
