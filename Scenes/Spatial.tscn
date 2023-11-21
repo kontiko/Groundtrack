@@ -23,7 +23,10 @@ func _ready():
 #func _process(delta):
 #	pass
 func zoom_in():
-	$Camera_helper.scale = $Camera_helper.scale/zoom_factor
+	print($Camera_helper.scale/zoom_factor)
+	print(6.4/10.0)
+	var scale = max(($Camera_helper.scale/zoom_factor).x,7/10.0)
+	$Camera_helper.scale = Vector3(scale,scale,scale)
 func zoom_out():
 	$Camera_helper.scale = $Camera_helper.scale*zoom_factor
 
@@ -52,24 +55,19 @@ const vec3 sphere_position = vec3(0.0,0.0,0.0);
 const float sphere_radius = 6.471;
 uniform float thickness_scale = 0.5;
 varying vec3 cam_position;
-bool raySphereIntersectBool(vec3 ro, vec3 rd,vec3 so, float sr){
-	float t = dot(so-ro,rd);
-	vec3 P = ro + rd*t;
-	float y = length(so -P);
-	return y <= sr;
-}
-vec2 raySpehereIntersectMaxDepth(vec3 ro, vec3 rd,vec3 so, float sr, float max_depth){
+
+vec3 raySpehereIntersectMaxDepthAlt(vec3 ro, vec3 rd,vec3 so, float sr, float max_depth){
 	float t = dot(so-ro,rd);
 	vec3 P = ro + rd*t;
 	float y = length(so -P);
 	
 	if (y>sr){
-		return vec2(-1.0);
+		return vec3(-1.0);
 	}
 	float x = sqrt(sr*sr - y*y);
 	float t1 = max(t-x,0.0);
 	float t2 = min(t+x,max_depth);
-	return vec2(t1,t2);
+	return vec3(t1,t2,min(1.0-y/sphere_radius,0.016));
 }
 void vertex(){
 	cam_position = MODELVIEW_MATRIX[3].xyz;
@@ -82,19 +80,19 @@ void fragment(){
 	view.xyz/= view.w;
 	float max_depth = length(view.xyz);
 	vec3 so =- (vec4(sphere_position, 1.0) * CAMERA_MATRIX).xyz;
-	vec2 rsi = raySpehereIntersectMaxDepth(cam_position, VIEW, so , sphere_radius, max_depth);
+	vec3 rsi = raySpehereIntersectMaxDepthAlt(cam_position, VIEW, so , sphere_radius, max_depth);
 	
-	ALPHA = clamp((rsi.y - rsi.x)*thickness_scale,0.0,1.0);
+	ALPHA = clamp((rsi.y - rsi.x)*thickness_scale*rsi.z,0.0,1.0);
 }
 "
 
 [sub_resource type="ShaderMaterial" id=9]
 shader = SubResource( 8 )
-shader_param/thickness_scale = 0.08
+shader_param/thickness_scale = 5.0
 
 [sub_resource type="SphereMesh" id=2]
-radius = 6.371
-height = 12.742
+radius = 6.357
+height = 12.756
 
 [sub_resource type="SpatialMaterial" id=3]
 albedo_texture = ExtResource( 3 )
@@ -132,7 +130,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30 )
 [node name="Camera_helper" type="Spatial" parent="."]
 
 [node name="Camera" type="Camera" parent="Camera_helper"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17.8223 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10 )
 keep_aspect = 0
 current = true
 far = 10000.0

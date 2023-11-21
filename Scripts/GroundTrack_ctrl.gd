@@ -77,6 +77,7 @@ func calculate_current_orbits():
 	
 
 func update_overflight():
+	#31.74
 	var passes = []
 	var current_pass = null
 	for orbit in $"%Orbit_Container".get_children():
@@ -84,8 +85,10 @@ func update_overflight():
 			for pos in orbit.point_count:
 				var time = orbit.last_orbit + orbit.period*(j + orbit.delta_area[pos]/orbit.complete_area)
 				var over_ground = calculate_projection(orbit.points[pos],time)
+				#check if zenith angle is smaller than 90 Degrees without calculating it first
 				var zenith_angle = over_ground.angle_to(Vector3(0,0,1))*180.0/PI
 				if zenith_angle<90:
+					
 					var direction = Vector2(over_ground.x,-over_ground.y).normalized()*zenith_angle
 					if current_pass == null:
 						current_pass = Dictionary()
@@ -96,6 +99,10 @@ func update_overflight():
 					if current_pass != null:
 						passes.append(current_pass)
 						current_pass = null
+						
+	if current_pass != null:
+		passes.append(current_pass)
+		current_pass = null
 	$"%Groundtrack".passes = passes
 	$"%Groundtrack".update()
 func _on_Button_pressed():
