@@ -24,7 +24,7 @@ var pos_offset = 0
 var delta_area = []
 var complete_area = 0.0
 var orbit_steps = 0.0
-
+var orbit_start_time = 0.0
 func update_Mesh():
 	delta_area = [0]
 	var vertices = PoolVector3Array()
@@ -201,6 +201,7 @@ func changed():
 	$Configs/peri_in.set_value_code(periapsis)
 	$Configs/major_in.set_value_code(semi_major)
 	$Configs/minor_in.set_value_code(semi_minor)
+	$Configs/aoa_in.set_value_code(aoa)
 	$Configs/Ecc_in.set_value_code(e)
 	$Control/ColorPickerButton.color = color
 	period = PlanetInfo.calc_Period(semi_major)
@@ -215,11 +216,14 @@ func update_postion(unix):
 	while last_orbit + period < unix:
 		changed = true
 		last_orbit += period
+		aoa += calc_LAN_precession()
 	while unix < last_orbit :
 		changed = true
 		last_orbit -= period
-		#orbit_steps += period/PlanetInfo.rotation_period*2*PI
+		aoa -= calc_LAN_precession()
 	if changed:
+		aoa= fposmod(aoa,360.0)
+		changed()
 		emit_signal("changed",name)
 	pos = searchpos(complete_area*float(time-last_orbit)/period)
 	$Configs/pos_in.set_value_code(pos*360.0/point_count)
@@ -277,7 +281,7 @@ func calc_groundpath():
 #Calculate Lat,Lng, coordinates for Point by Normalizing the Vectors
 func to_2d(point):
 	var point_in  = point.normalized()
-	var lng = fposmod(atan2(point_in.x,point_in.z),2*PI)
+	var lng = fposmod(atan2(point_in.x,point_in.z),2*PI)*cos(incl)
 	var lat = -asin(point_in.y)
 	return Vector2(lng,lat)
 
@@ -288,3 +292,7 @@ func current_pos_2d():
 	pos_2d.x = fposmod(pos_2d.x,2*PI)
 	pos_2d = pos_2d * Vector2(1024.0/(2*PI),512.0/(PI))
 	return pos_2d
+
+func calc_LAN_precession():
+	print(-3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/pow(pow(semi_minor,2)/semi_major,2)*cos(incl*PI/180))
+	return -3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/pow(pow(semi_minor,2)/semi_major,2)*cos(incl*PI/180)

@@ -1,6 +1,7 @@
 extends Node
 
 var radius = 6371
+var radius_eq = 6378.137
 var Mass = 5.9722e24
 const grav_const = 6.6743e-11
 var base_angle = PI/2
@@ -8,6 +9,7 @@ var period = 31558149.7635
 var solstice_unix_offset = 22869862.5345 - period/2.0
 var rotation_period = 86164.1
 var specific_grav = 3.986025446e5
+var J_2 = 1.08262668e-3
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"

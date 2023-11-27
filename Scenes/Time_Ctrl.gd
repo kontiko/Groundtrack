@@ -42,6 +42,9 @@ func _on_Month_value_changed(value):
 	if value>12:
 		date_time.year += 1
 		date_time.month = 1
+	if value == 0:
+		date_time.year -= 1
+		date_time.month = 12
 	time = correct_day_of_month(date_time)
 	emit_signal("time_changed",time)
 	update_display()
