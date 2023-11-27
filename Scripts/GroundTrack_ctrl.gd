@@ -15,6 +15,7 @@ func calc_observations(preview_window):
 	var overflights = []
 	var current_overflight = null
 	for orbit in $"%Orbit_Container".get_children():
+		var LAN_precession = orbit.calc_LAN_precession()/180.0*PI
 		var pos = orbit.pos 
 		var start_time = orbit.last_orbit
 		var sim_time = orbit.time
@@ -23,7 +24,8 @@ func calc_observations(preview_window):
 			var  orbit_pos: Vector3 = orbit.points[pos%orbit.point_count]
 			var rotations = pos/orbit.point_count
 			#calculate rotation from earth
-			var over_ground = calculate_projection(orbit_pos,sim_time)
+			var node_precession = LAN_precession*int((sim_time-start_time)/orbit.period)
+			var over_ground = calculate_projection(orbit_pos,sim_time,node_precession)
 			var zenith_angle = over_ground.angle_to(Vector3(0,0,1))*180.0/PI
 			#if the angle is bigger than 90 degrees the satellite isn't visible anymore so skip further calculations
 			if zenith_angle>observation_angle:
@@ -49,14 +51,14 @@ func calc_observations(preview_window):
 					overflights.append(current_overflight)
 					current_overflight = null
 	$overflight_table.set_table(overflights)
-func calculate_projection(point,time):
+func calculate_projection(point,time,nodal_procession):
 	var dt = fposmod(time-PlanetInfo.solstice_unix_offset,PlanetInfo.period)
 	var sun_angle = 2*PI*dt/PlanetInfo.period
 	var time_dict = Time.get_time_dict_from_unix_time(int(time))
 	var earth_rot = (float(time_dict.hour)/24.0
 			+float(time_dict.minute)/1440.0
 			+float(time_dict.second)/86400)*2*PI
-	var rot = earth_rot + sun_angle + lng + PI
+	var rot = earth_rot + sun_angle + lng + PI - nodal_procession
 	#Transform the points so that the observation point lies at the origin and looks in the direction of the x axis
 	return point.rotated(Vector3(0,1,0),-rot).rotated(Vector3(1,0,0),lat)- Vector3(0,0,PlanetInfo.radius/1000.0)
 
@@ -64,7 +66,7 @@ func calculate_current_orbits():
 	var positions = []
 	for orbit in $"%Orbit_Container".get_children():
 		var pos_3d = orbit.points[orbit.pos]
-		var over_ground = calculate_projection(pos_3d,orbit.time)
+		var over_ground = calculate_projection(pos_3d,orbit.time,0)
 		var zenith_angle = over_ground.angle_to(Vector3(0,0,1))*180.0/PI
 		if zenith_angle>90:
 			continue
@@ -83,7 +85,7 @@ func update_overflight():
 		for j in range(2):
 			for pos in orbit.point_count:
 				var time = orbit.last_orbit + orbit.period*(j + orbit.delta_area[pos]/orbit.complete_area)
-				var over_ground = calculate_projection(orbit.points[pos],time)
+				var over_ground = calculate_projection(orbit.points[pos],time,j*orbit.calc_LAN_precession()/180.0*PI)
 				#check if zenith angle is smaller than 90 Degrees without calculating it first
 				var zenith_angle = over_ground.angle_to(Vector3(0,0,1))*180.0/PI
 				if zenith_angle<90:
