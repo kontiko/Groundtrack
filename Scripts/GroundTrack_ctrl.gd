@@ -25,8 +25,7 @@ func calc_observations(preview_window):
 			#calculate rotation from earth
 			var over_ground = calculate_projection(orbit_pos,sim_time)
 			var zenith_angle = over_ground.angle_to(Vector3(0,0,1))*180.0/PI
-			#print(zenith_angle)
-			#if the angle is 
+			#if the angle is bigger than 90 degrees the satellite isn't visible anymore so skip further calculations
 			if zenith_angle>observation_angle:
 				if current_overflight != null:
 					current_overflight["end"] = sim_time

@@ -213,6 +213,7 @@ func changed():
 func update_postion(unix):
 	time = unix
 	var changed = false
+	#Change Last orbit var to timestep when the orbit started at periapsis
 	while last_orbit + period < unix:
 		changed = true
 		last_orbit += period
@@ -228,6 +229,7 @@ func update_postion(unix):
 	pos = searchpos(complete_area*float(time-last_orbit)/period)
 	$Configs/pos_in.set_value_code(pos*360.0/point_count)
 
+#Calculate the distance the eath and sun rotated at the current specified unix time stamp
 func orbit_step():
 	var dt = fposmod(last_orbit-PlanetInfo.solstice_unix_offset,PlanetInfo.period)
 	var angle = 2*PI*dt/PlanetInfo.period

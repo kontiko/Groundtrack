@@ -38,6 +38,7 @@ func time_step(time):
 	unix_time += time
 	$\"%3d_View\".set_sun_angle(unix_time)
 	$HSplitContainer/Left_Organize/Time_Container.set_time(unix_time)
+	#Update all Positions of satellites in all projections
 	for orbit in $\"%Orbit_Container\".get_children():
 		orbit.update_postion(unix_time)
 		var orbit_3d = $\"%3d_View\".find_node(orbit.name, true, false)
@@ -45,7 +46,7 @@ func time_step(time):
 		$\"%2D_View\".show_satelite(orbit.name,orbit.current_pos_2d(),orbit.color)
 	$\"%Tracking\".calculate_current_orbits()
 
-
+#Run when one orbit changed to update all projctions
 func changed_orbit(name):
 	var orbit_conf = $\"%Orbit_Container\".find_node(name, true, false)
 	var orbit_3d = $\"%3d_View\".find_node(name, true, false)
