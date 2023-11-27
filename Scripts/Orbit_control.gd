@@ -260,9 +260,9 @@ func calc_groundpath():
 	var points_in = points
 	for j in range(2):
 		var last_point = to_2d(points[0])
-		last_point.x = last_point.x + PlanetInfo.base_angle - j*period/PlanetInfo.rotation_period*2*PI - steps
+		last_point.x = last_point.x + PlanetInfo.base_angle - (j)*period/PlanetInfo.rotation_period*2*PI - steps
 		last_point.x = fposmod(last_point.x,2*PI)
-		last_point *= Vector2(1024.0/(2*PI),512.0/(PI))
+		last_point = last_point* Vector2(1024.0/(2*PI),512.0/(PI))
 		for i in range(len(points)):
 			var ind_2 = (i + 1)%point_count
 			var o_2 = (i + 1)/point_count
@@ -283,7 +283,7 @@ func calc_groundpath():
 #Calculate Lat,Lng, coordinates for Point by Normalizing the Vectors
 func to_2d(point):
 	var point_in  = point.normalized()
-	var lng = fposmod(atan2(point_in.x,point_in.z),2*PI)*cos(incl)
+	var lng = fposmod(atan2(point_in.x,point_in.z),2*PI)
 	var lat = -asin(point_in.y)
 	return Vector2(lng,lat)
 
@@ -296,5 +296,4 @@ func current_pos_2d():
 	return pos_2d
 
 func calc_LAN_precession():
-	print(-3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/pow(pow(semi_minor,2)/semi_major,2)*cos(incl*PI/180))
 	return -3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/pow(pow(semi_minor,2)/semi_major,2)*cos(incl*PI/180)
