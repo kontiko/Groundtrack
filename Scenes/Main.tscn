@@ -279,8 +279,8 @@ margin_bottom = -4.0
 scroll_horizontal_enabled = false
 
 [node name="Orbits" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/Orbits"]
-margin_right = 620.0
-margin_bottom = 36.0
+margin_right = 629.0
+margin_bottom = 629.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 

@@ -218,10 +218,12 @@ func update_postion(unix):
 		changed = true
 		last_orbit += period
 		aoa += calc_LAN_precession()
+		aop += calc_Apsides_precession()
 	while unix < last_orbit :
 		changed = true
 		last_orbit -= period
 		aoa -= calc_LAN_precession()
+		aop -= calc_Apsides_precession()
 	if changed:
 		aoa= fposmod(aoa,360.0)
 		changed()
@@ -297,3 +299,6 @@ func current_pos_2d():
 
 func calc_LAN_precession():
 	return -3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/pow(pow(semi_minor,2)/semi_major,2)*cos(incl*PI/180)
+	
+func calc_Apsides_precession():
+	return -3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/(2*pow(pow(semi_minor,2)/semi_major,2))*(4-5*sin(incl*PI/180))
