@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://DarkTheme/Fonts/Ubuntu-L.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://resources/icons8-play-32.png" type="Texture" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://resources/icons8-pause-32.png" type="Texture" id=10]
 [ext_resource path="res://Scenes/Tracking_ctrl.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Scenes/Groundtrack_view.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Tracking_ctrl.gd" type="Script" id=13]
 
 [sub_resource type="GDScript" id=3]
 script/source = "extends Control
@@ -312,6 +313,7 @@ margin_left = 0.0
 margin_top = 0.0
 margin_right = 387.0
 margin_bottom = 38.0
+script = ExtResource( 13 )
 
 [node name="View_Container" type="VBoxContainer" parent="HSplitContainer"]
 margin_left = 643.0

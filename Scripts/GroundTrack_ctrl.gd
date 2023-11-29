@@ -43,7 +43,8 @@ func calc_observations(preview_window):
 					current_overflight["start"] = sim_time
 					current_overflight["altitude"] = altitude
 					current_overflight["points"] = []
-				current_overflight["points"].append({"unix":sim_time,"pos":over_ground})
+				current_overflight["points"].append({"unix":sim_time,
+								"pos":[over_ground.x,over_ground.y,over_ground.z]})
 			pos += 1
 			sim_time = start_time + orbit.period*(pos/orbit.point_count
 								  + orbit.delta_area[pos%orbit.point_count]/orbit.complete_area)
@@ -52,6 +53,8 @@ func calc_observations(preview_window):
 					overflights.append(current_overflight)
 					current_overflight = null
 	$overflight_table.set_table(overflights)
+	return overflights
+
 func calculate_projection(point,time):
 	var dt = fposmod(time-PlanetInfo.solstice_unix_offset,PlanetInfo.period)
 	var sun_angle = 2*PI*dt/PlanetInfo.period

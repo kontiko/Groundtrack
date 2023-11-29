@@ -13,9 +13,9 @@ var Vertices
 var point_count = 7200
 var reference_radius = 6371
 var color = Color.green
-var aop = 0.0
-var incl = 0.0
-var aoa = 0.0
+export (float) var aop = 0.0
+export (float) var incl = 0.0
+export (float) var aoa = 0.0
 var period = 0
 var time = 0.0
 var last_orbit = 0.0
