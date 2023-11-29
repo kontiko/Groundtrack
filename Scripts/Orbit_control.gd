@@ -301,4 +301,4 @@ func calc_LAN_precession():
 	return -3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/pow(pow(semi_minor,2)/semi_major,2)*cos(incl*PI/180)
 	
 func calc_Apsides_precession():
-	return -3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/(2*pow(pow(semi_minor,2)/semi_major,2))*(4-5*sin(incl*PI/180))
+	return -3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/(2*pow(pow(semi_minor,2)/semi_major,2))*(4-5*pow(sin(incl*PI/180),2))

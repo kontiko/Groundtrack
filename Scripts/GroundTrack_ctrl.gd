@@ -3,7 +3,7 @@ extends VBoxContainer
 var lat = 0.0
 var lng = 0.0
 #maximum angle to zenith at which an overflight gets registered
-var observation_angle = 70
+var observation_angle = 85
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -42,6 +42,8 @@ func calc_observations(preview_window):
 					current_overflight["name"] = orbit.name
 					current_overflight["start"] = sim_time
 					current_overflight["altitude"] = altitude
+					current_overflight["points"] = []
+				current_overflight["points"].append({"unix":sim_time,"pos":over_ground})
 			pos += 1
 			sim_time = start_time + orbit.period*(pos/orbit.point_count
 								  + orbit.delta_area[pos%orbit.point_count]/orbit.complete_area)
