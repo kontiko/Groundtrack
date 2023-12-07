@@ -3,6 +3,6 @@
 [ext_resource path="res://custom_spin_box.gd" type="Script" id=1]
 
 [node name="SpinBox" type="SpinBox"]
-margin_right = 74.0
-margin_bottom = 24.0
+offset_right = 74.0
+offset_bottom = 24.0
 script = ExtResource( 1 )

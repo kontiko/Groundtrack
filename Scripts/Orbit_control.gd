@@ -2,17 +2,17 @@ extends VBoxContainer
 
 signal changed(name)
 signal delete(name)
-export var periapsis = 100.0 
-export var apoapsis = 100.0 
-export (float) var semi_major 
-export (float) var semi_minor 
-export (float) var e 
-var points = PoolVector3Array()
+@export var periapsis = 100.0 
+@export var apoapsis = 100.0 
+@export  var semi_major :float
+@export  var semi_minor:float
+@export  var e:float
+var points = PackedVector3Array()
 var mesh
 var Vertices
 var point_count = 7200
 var reference_radius = 6371
-var color = Color.green
+var color = Color.GREEN
 var aop = 0.0
 var incl = 0.0
 var aoa = 0.0
@@ -27,8 +27,8 @@ var orbit_steps = 0.0
 var orbit_start_time = 0.0
 func update_Mesh():
 	delta_area = [0]
-	var vertices = PoolVector3Array()
-	var point_list = PoolVector3Array()
+	var vertices = PackedVector3Array()
+	var point_list = PackedVector3Array()
 	var last_point = calc_vec(0)
 	complete_area = 0.0
 	point_list.push_back(last_point)
@@ -51,7 +51,7 @@ func update_Mesh():
 	arrays[ArrayMesh.ARRAY_VERTEX] = vertices
 	# Create the Mesh.
 	arr_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_LINES, arrays)
-	var mat = SpatialMaterial.new()
+	var mat = StandardMaterial3D.new()
 	mat.albedo_color = color
 	for surface in arr_mesh.get_surface_count():
 		arr_mesh.surface_set_material(surface,mat)
@@ -69,7 +69,7 @@ func calc_vec(angle: float):
 func _ready():
 	$Control/LineEdit.text = name
 	set_apo(apoapsis)
-	changed()
+	changed_in()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -136,48 +136,48 @@ func _on_apo_in_value_changed(value):
 	if value == (apoapsis):
 		return
 	set_apo(value)
-	changed()
+	changed_in()
 
 
 func _on_peri_in_value_changed(value):
 	if value == (periapsis):
 		return
 	set_peri(value)
-	changed()
+	changed_in()
 
 func _on_major_in_value_changed(value):
 	if value == (semi_major):
 		return
 	set_major(value)
-	changed()
+	changed_in()
 
 func _on_minor_in_value_changed(value):
 	if value == semi_minor:
 		return
 	set_minor(value)
-	changed()
+	changed_in()
 
 func _on_Ecc_in_value_changed(value):
 	if value == e:
 		return
 	set_e(value)
-	changed()
+	changed_in()
 
 func _on_ColorPickerButton_color_changed(color_in):
 	color = color_in
-	changed()
+	changed_in()
 
 func _on_aop_in_value_changed(value):
 	aop = value
-	changed()
+	changed_in()
 
 func _on_aoa_in_value_changed(value):
 	aoa = value
-	changed()
+	changed_in()
 
 func _on_Incl_in_value_changed(value):
 	incl = value
-	changed()
+	changed_in()
 
 func _on_TextureButton_toggled(button_pressed):
 	$Control/TextureButton.flip_v = button_pressed
@@ -196,7 +196,7 @@ func _on_pos_in_value_changed(value):
 #Update  Orbit parameters after one changed
 ###############################################################################
 
-func changed():
+func changed_in():
 	$Configs/apo_in.set_value_code(apoapsis)
 	$Configs/peri_in.set_value_code(periapsis)
 	$Configs/major_in.set_value_code(semi_major)
@@ -226,7 +226,7 @@ func update_postion(unix):
 		aop -= calc_Apsides_precession()
 	if changed:
 		aoa= fposmod(aoa,360.0)
-		changed()
+		changed_in()
 		emit_signal("changed",name)
 	pos = searchpos(complete_area*float(time-last_orbit)/period)
 	$Configs/pos_in.set_value_code(pos*360.0/point_count)
@@ -301,4 +301,4 @@ func calc_LAN_precession():
 	return -3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/pow(pow(semi_minor,2)/semi_major,2)*cos(incl*PI/180)
 	
 func calc_Apsides_precession():
-	return -3*180*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/(2*pow(pow(semi_minor,2)/semi_major,2))*(4-5*pow(sin(incl*PI/180),2))
+	return -3*90*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/(2*pow(pow(semi_minor,2)/semi_major,2))*(4-5*pow(sin(incl*PI/180),2))

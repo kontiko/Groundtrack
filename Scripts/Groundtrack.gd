@@ -17,10 +17,10 @@ func _ready():
 
 func _draw():
 	for i in range(10):
-		draw_arc(Vector2(0,0),i*20,0,2*PI,360,Color.red)
+		draw_arc(Vector2(0,0),i*20,0,2*PI,360,Color.RED)
 	for i in range(8):
 		draw_line(Vector2(sin(i/4.0*PI),cos(i/4.0*PI))*180,
-				  Vector2(-sin(i/4.0*PI),-cos(i/4.0*PI))*180,Color.red)
+				  Vector2(-sin(i/4.0*PI),-cos(i/4.0*PI))*180,Color.RED)
 	for overpass in passes:
 		var col = overpass["color"]
 		var points = overpass["points"]

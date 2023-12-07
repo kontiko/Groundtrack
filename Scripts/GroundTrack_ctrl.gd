@@ -75,7 +75,7 @@ func calculate_current_orbits():
 		var data = {"position":pos_2d,"color":orbit.color}
 		positions.append(data)
 	$"%Groundtrack".positions = positions
-	$"%Groundtrack".update()
+	$"%Groundtrack".queue_redraw()
 
 func estimate_J2_effect(point,orbit,orbit_count):
 	var node_precession = orbit.calc_LAN_precession()/180.0*PI*orbit_count
@@ -117,7 +117,7 @@ func update_overflight():
 		passes.append(current_pass)
 		current_pass = null
 	$"%Groundtrack".passes = passes
-	$"%Groundtrack".update()
+	$"%Groundtrack".queue_redraw()
 func _on_Button_pressed():
 	calc_observations(604800.0)
 

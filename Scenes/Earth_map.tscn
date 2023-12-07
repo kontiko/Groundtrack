@@ -1,16 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://cuxl4ayrgbduh"]
 
-[ext_resource path="res://resources/2k_earth_daymap.jpg" type="Texture" id=1]
-[ext_resource path="res://Scenes/Orbit_paths.gd" type="Script" id=2]
+[ext_resource type="Texture2D" uid="uid://cjx50j14ayvit" path="res://resources/2k_earth_daymap.jpg" id="1"]
+[ext_resource type="Script" path="res://Scenes/Orbit_paths.gd" id="2"]
 
-[sub_resource type="GDScript" id=2]
+[sub_resource type="GDScript" id="2"]
 script/source = "extends Node2D
 var orbits = Dictionary()
 # Declare member variables here. Examples:
 # var a = 2
 # var b = \"text\"
 var positions = Dictionary()
-onready var orbit_paths = $Orbit_paths
+@onready var orbit_paths = $Orbit_paths
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -22,14 +22,14 @@ func _ready():
 func remove_orbit(name):
 	orbit_paths.orbits.erase(name)
 	positions.erase(name)
-	update()
-	orbit_paths.update()
+	queue_redraw()
+	orbit_paths.queue_redraw()
 func update_orbit(name,color,points):
 	orbit_paths.orbits[name] = [color,points]
-	orbit_paths.update()
+	orbit_paths.queue_redraw()
 func show_satelite(name,pos,color):
 	positions[name] = [pos,color]
-	update()
+	queue_redraw()
 	
 func _draw():
 	for position in positions:
@@ -38,7 +38,7 @@ func _draw():
 		draw_circle(pos+Vector2(0,300),5,col)
 "
 
-[sub_resource type="GDScript" id=1]
+[sub_resource type="GDScript" id="1"]
 script/source = "extends Camera2D
 
 
@@ -62,18 +62,17 @@ func _process(delta):
 "
 
 [node name="Map" type="Node2D"]
-script = SubResource( 2 )
+script = SubResource("2")
 
-[node name="2kEarthDaymap" type="Sprite" parent="."]
-position = Vector2( 512, 300 )
-scale = Vector2( 0.5, 0.5 )
+[node name="2kEarthDaymap" type="Sprite2D" parent="."]
 z_index = -1
-texture = ExtResource( 1 )
+position = Vector2(512, 300)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 512, 300 )
-current = true
-script = SubResource( 1 )
+position = Vector2(512, 300)
+script = SubResource("1")
 
 [node name="Orbit_paths" type="Node2D" parent="."]
-script = ExtResource( 2 )
+script = ExtResource("2")
