@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cseegh63onn60"]
+[gd_scene load_steps=10 format=3 uid="uid://cseegh63onn60"]
 
+[ext_resource type="Shader" path="res://resources/atmosphere.gdshader" id="1_wmokl"]
 [ext_resource type="Script" path="res://Scripts/Camera.gd" id="2"]
-[ext_resource type="Texture2D" uid="uid://cjx50j14ayvit" path="res://resources/2k_earth_daymap.jpg" id="3"]
 
 [sub_resource type="GDScript" id="5"]
 script/source = "extends Node3D
@@ -44,19 +44,28 @@ func set_sun_angle(unix):
 "
 
 [sub_resource type="SphereMesh" id="10"]
-radius = 6.5
+radius = 6.391
 height = 13.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_33m7i"]
-albedo_texture = ExtResource("3")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ovka4"]
+render_priority = 0
+shader = ExtResource("1_wmokl")
+shader_parameter/thickness_scale = 0.5
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_q8la5"]
+load_path = "res://.godot/imported/2k_earth_daymap.jpg-bca652a63a9fe09154fd90440beac7fe.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nf1qi"]
+albedo_texture = SubResource("CompressedTexture2D_q8la5")
 
 [sub_resource type="SphereMesh" id="2"]
-material = SubResource("StandardMaterial3D_33m7i")
-radius = 6.357
-height = 12.756
+material = SubResource("StandardMaterial3D_nf1qi")
+radius = 6.398
+height = 12.796
 
 [sub_resource type="Environment" id="6"]
 background_mode = 1
+ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_energy = 0.05
 
@@ -64,9 +73,9 @@ ambient_light_energy = 0.05
 script = SubResource("5")
 
 [node name="Atmosphere" type="MeshInstance3D" parent="."]
-visible = false
 mesh = SubResource("10")
 skeleton = NodePath("../Earth")
+surface_material_override/0 = SubResource("ShaderMaterial_ovka4")
 
 [node name="Earth" type="MeshInstance3D" parent="."]
 mesh = SubResource("2")

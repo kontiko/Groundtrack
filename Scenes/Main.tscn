@@ -24,11 +24,11 @@ var unix_time = Time.get_unix_time_from_system()
 var orbit_count = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$HSplitContainer/Left_Organize/Time_Container.set_time(unix_time)
+	$VBoxContainer/HBoxContainer/Time_Container.set_time(unix_time)
 	$\"%3d_View\".set_sun_angle(unix_time)
 
 func _process(delta):
-	if not $HSplitContainer/View_Container/HBoxContainer/TextureButton.button_pressed:
+	if not $VBoxContainer/HBoxContainer/HBoxContainer/TextureButton.button_pressed:
 		return
 	var time = delta*speed
 	time_step(time)
@@ -37,7 +37,7 @@ func _process(delta):
 func time_step(time):
 	unix_time += time
 	$\"%3d_View\".set_sun_angle(unix_time)
-	$HSplitContainer/Left_Organize/Time_Container.set_time(unix_time)
+	$VBoxContainer/HBoxContainer/Time_Container.set_time(unix_time)
 	#Update all Positions of satellites in all projections
 	for orbit in $\"%Orbit_Container\".get_children():
 		orbit.update_postion(unix_time)
@@ -159,7 +159,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3")
 script = SubResource("3")
 Orbit_control = ExtResource("4")
 Orbit_3D = ExtResource("6")
@@ -168,196 +167,210 @@ Orbit_3D = ExtResource("6")
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource("3")
 
-[node name="HSplitContainer" type="HSplitContainer" parent="."]
-layout_mode = 0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Left_Organize" type="VBoxContainer" parent="HSplitContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Time_Container" type="HBoxContainer" parent="HSplitContainer/Left_Organize"]
+[node name="MenuButton" type="MenuButton" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Files"
+flat = false
+
+[node name="Time_Container" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 script = ExtResource("8")
 
-[node name="Year" parent="HSplitContainer/Left_Organize/Time_Container" instance=ExtResource("9")]
+[node name="Year" parent="VBoxContainer/HBoxContainer/Time_Container" instance=ExtResource("9")]
 layout_mode = 2
 max_value = 3000.0
 
-[node name="Label" type="Label" parent="HSplitContainer/Left_Organize/Time_Container"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Time_Container"]
 layout_mode = 2
 theme = ExtResource("3")
 theme_override_fonts/font = SubResource("1")
 text = "-"
 
-[node name="Month" parent="HSplitContainer/Left_Organize/Time_Container" instance=ExtResource("9")]
+[node name="Month" parent="VBoxContainer/HBoxContainer/Time_Container" instance=ExtResource("9")]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="HSplitContainer/Left_Organize/Time_Container"]
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/Time_Container"]
 layout_mode = 2
 theme = ExtResource("3")
 theme_override_fonts/font = SubResource("1")
 text = "-"
 
-[node name="Day" parent="HSplitContainer/Left_Organize/Time_Container" instance=ExtResource("9")]
+[node name="Day" parent="VBoxContainer/HBoxContainer/Time_Container" instance=ExtResource("9")]
 layout_mode = 2
 
-[node name="Label5" type="Label" parent="HSplitContainer/Left_Organize/Time_Container"]
+[node name="Label5" type="Label" parent="VBoxContainer/HBoxContainer/Time_Container"]
 layout_mode = 2
 theme = ExtResource("3")
 theme_override_fonts/font = SubResource("1")
 text = " "
 
-[node name="Hour" parent="HSplitContainer/Left_Organize/Time_Container" instance=ExtResource("9")]
+[node name="Hour" parent="VBoxContainer/HBoxContainer/Time_Container" instance=ExtResource("9")]
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="HSplitContainer/Left_Organize/Time_Container"]
-layout_mode = 2
-theme = ExtResource("3")
-theme_override_fonts/font = SubResource("1")
-text = ":"
-
-[node name="Minute" parent="HSplitContainer/Left_Organize/Time_Container" instance=ExtResource("9")]
-layout_mode = 2
-
-[node name="Label4" type="Label" parent="HSplitContainer/Left_Organize/Time_Container"]
+[node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer/Time_Container"]
 layout_mode = 2
 theme = ExtResource("3")
 theme_override_fonts/font = SubResource("1")
 text = ":"
 
-[node name="Second" parent="HSplitContainer/Left_Organize/Time_Container" instance=ExtResource("9")]
+[node name="Minute" parent="VBoxContainer/HBoxContainer/Time_Container" instance=ExtResource("9")]
 layout_mode = 2
 
-[node name="TabContainer" type="TabContainer" parent="HSplitContainer/Left_Organize"]
+[node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer/Time_Container"]
 layout_mode = 2
-size_flags_vertical = 3
+theme = ExtResource("3")
+theme_override_fonts/font = SubResource("1")
+text = ":"
 
-[node name="Orbits" type="ScrollContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
-layout_mode = 2
-
-[node name="Orbits" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/Orbits"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Orbit_Container" type="VBoxContainer" parent="HSplitContainer/Left_Organize/TabContainer/Orbits/Orbits"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Add_orbit_Button" type="Button" parent="HSplitContainer/Left_Organize/TabContainer/Orbits/Orbits"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "Add Orbit"
-
-[node name="Groundstation" type="ScrollContainer" parent="HSplitContainer/Left_Organize/TabContainer"]
-visible = false
+[node name="Second" parent="VBoxContainer/HBoxContainer/Time_Container" instance=ExtResource("9")]
 layout_mode = 2
 
-[node name="Tracking" parent="HSplitContainer/Left_Organize/TabContainer/Groundstation" instance=ExtResource("11")]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="View_Container" type="VBoxContainer" parent="HSplitContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/View_Container"]
-layout_mode = 2
-
-[node name="TextureButton" type="TextureButton" parent="HSplitContainer/View_Container/HBoxContainer"]
+[node name="TextureButton" type="TextureButton" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 toggle_mode = true
 texture_normal = ExtResource("2")
 texture_pressed = ExtResource("10")
 
-[node name="50x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
+[node name="50x" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 toggle_mode = true
 button_pressed = true
 text = "50x"
 
-[node name="100x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
+[node name="100x" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "100x"
 
-[node name="1000x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
+[node name="1000x" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "1000x"
 
-[node name="10000x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
+[node name="10000x" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "10000x"
 
-[node name="100000x" type="Button" parent="HSplitContainer/View_Container/HBoxContainer"]
+[node name="100000x" type="Button" parent="VBoxContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "10000x"
 
-[node name="TabContainer" type="TabContainer" parent="HSplitContainer/View_Container"]
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Left_Organize" type="VBoxContainer" parent="VBoxContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer/HSplitContainer/Left_Organize"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Orbits" type="ScrollContainer" parent="VBoxContainer/HSplitContainer/Left_Organize/TabContainer"]
+layout_mode = 2
+
+[node name="Orbits" type="VBoxContainer" parent="VBoxContainer/HSplitContainer/Left_Organize/TabContainer/Orbits"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Orbit_Container" type="VBoxContainer" parent="VBoxContainer/HSplitContainer/Left_Organize/TabContainer/Orbits/Orbits"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Add_orbit_Button" type="Button" parent="VBoxContainer/HSplitContainer/Left_Organize/TabContainer/Orbits/Orbits"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Add Orbit"
+
+[node name="Groundstation" type="ScrollContainer" parent="VBoxContainer/HSplitContainer/Left_Organize/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Tracking" parent="VBoxContainer/HSplitContainer/Left_Organize/TabContainer/Groundstation" instance=ExtResource("11")]
+layout_mode = 2
+
+[node name="View_Container" type="VBoxContainer" parent="VBoxContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer/HSplitContainer/View_Container"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("3")
 
-[node name="3D View" type="SubViewportContainer" parent="HSplitContainer/View_Container/TabContainer"]
+[node name="3D View" type="SubViewportContainer" parent="VBoxContainer/HSplitContainer/View_Container/TabContainer"]
 layout_mode = 2
 stretch = true
 script = SubResource("2")
 
-[node name="SubViewport" type="SubViewport" parent="HSplitContainer/View_Container/TabContainer/3D View"]
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/HSplitContainer/View_Container/TabContainer/3D View"]
 handle_input_locally = false
-size = Vector2i(629, 646)
+size = Vector2i(626, 645)
 render_target_update_mode = 4
 
-[node name="3d_View" parent="HSplitContainer/View_Container/TabContainer/3D View/SubViewport" instance=ExtResource("7")]
+[node name="3d_View" parent="VBoxContainer/HSplitContainer/View_Container/TabContainer/3D View/SubViewport" instance=ExtResource("7")]
 unique_name_in_owner = true
 
-[node name="2D View" type="SubViewportContainer" parent="HSplitContainer/View_Container/TabContainer"]
+[node name="2D View" type="SubViewportContainer" parent="VBoxContainer/HSplitContainer/View_Container/TabContainer"]
 visible = false
 layout_mode = 2
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="HSplitContainer/View_Container/TabContainer/2D View"]
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/HSplitContainer/View_Container/TabContainer/2D View"]
 handle_input_locally = false
 size = Vector2i(2, 2)
 size_2d_override_stretch = true
 render_target_update_mode = 0
 
-[node name="2D_View" parent="HSplitContainer/View_Container/TabContainer/2D View/SubViewport" instance=ExtResource("5")]
+[node name="2D_View" parent="VBoxContainer/HSplitContainer/View_Container/TabContainer/2D View/SubViewport" instance=ExtResource("5")]
 unique_name_in_owner = true
 
-[node name="Groundtrack" type="SubViewportContainer" parent="HSplitContainer/View_Container/TabContainer"]
+[node name="Groundtrack" type="SubViewportContainer" parent="VBoxContainer/HSplitContainer/View_Container/TabContainer"]
 visible = false
 layout_mode = 2
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="HSplitContainer/View_Container/TabContainer/Groundtrack"]
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/HSplitContainer/View_Container/TabContainer/Groundtrack"]
 handle_input_locally = false
 size = Vector2i(2, 2)
 size_2d_override_stretch = true
 render_target_update_mode = 0
 
-[node name="Groundtrack" parent="HSplitContainer/View_Container/TabContainer/Groundtrack/SubViewport" instance=ExtResource("12")]
+[node name="Groundtrack" parent="VBoxContainer/HSplitContainer/View_Container/TabContainer/Groundtrack/SubViewport" instance=ExtResource("12")]
 position = Vector2(651, 118)
 
-[connection signal="time_changed" from="HSplitContainer/Left_Organize/Time_Container" to="." method="_on_Time_Container_time_changed"]
-[connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Year" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Year_value_changed"]
-[connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Month" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Month_value_changed"]
-[connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Day" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Day_value_changed"]
-[connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Hour" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Hour_value_changed"]
-[connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Minute" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Minute_value_changed"]
-[connection signal="value_changed" from="HSplitContainer/Left_Organize/Time_Container/Second" to="HSplitContainer/Left_Organize/Time_Container" method="_on_Second_value_changed"]
-[connection signal="pressed" from="HSplitContainer/Left_Organize/TabContainer/Orbits/Orbits/Add_orbit_Button" to="." method="_on_Add_orbit_Button_pressed"]
-[connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/50x" to="." method="_on_x_pressed" binds= [50]]
-[connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/100x" to="." method="_on_x_pressed" binds= [100]]
-[connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/1000x" to="." method="_on_x_pressed" binds= [1000]]
-[connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/10000x" to="." method="_on_x_pressed" binds= [10000]]
-[connection signal="pressed" from="HSplitContainer/View_Container/HBoxContainer/100000x" to="." method="_on_x_pressed" binds= [100000]]
+[connection signal="time_changed" from="VBoxContainer/HBoxContainer/Time_Container" to="." method="_on_Time_Container_time_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/Time_Container/Year" to="VBoxContainer/HBoxContainer/Time_Container" method="_on_Year_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/Time_Container/Month" to="VBoxContainer/HBoxContainer/Time_Container" method="_on_Month_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/Time_Container/Day" to="VBoxContainer/HBoxContainer/Time_Container" method="_on_Day_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/Time_Container/Hour" to="VBoxContainer/HBoxContainer/Time_Container" method="_on_Hour_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/Time_Container/Minute" to="VBoxContainer/HBoxContainer/Time_Container" method="_on_Minute_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/Time_Container/Second" to="VBoxContainer/HBoxContainer/Time_Container" method="_on_Second_value_changed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/50x" to="." method="_on_x_pressed" binds= [50]]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/100x" to="." method="_on_x_pressed" binds= [100]]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/1000x" to="." method="_on_x_pressed" binds= [1000]]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/10000x" to="." method="_on_x_pressed" binds= [10000]]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/100000x" to="." method="_on_x_pressed" binds= [100000]]
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/Left_Organize/TabContainer/Orbits/Orbits/Add_orbit_Button" to="." method="_on_Add_orbit_Button_pressed"]
