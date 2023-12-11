@@ -302,3 +302,30 @@ func calc_LAN_precession():
 	
 func calc_Apsides_precession():
 	return -3*90*PlanetInfo.J_2*pow(PlanetInfo.radius_eq,2)/(2*pow(pow(semi_minor,2)/semi_major,2))*(4-5*pow(sin(incl*PI/180),2))
+
+func get_orbit_dict()->Dictionary:
+	var dict = {
+		"semi_minor":semi_minor,
+		"semi_major":semi_major,
+		"incl":incl,
+		"aoa":aoa,
+		"aop":aop,
+		"pos":pos,
+		"last_orbit":last_orbit,
+		"time":time,
+		"color":color,
+		"name":$Control/LineEdit.text
+	}
+	return dict
+func set_orbit_dict(dict:Dictionary):
+	semi_major = dict["semi_major"]
+	set_minor(dict["semi_minor"])
+	incl = dict["incl"]
+	aoa = dict["aoa"]
+	aop = dict["aop"]
+	pos = dict["pos"]
+	last_orbit = dict["last_orbit"]
+	time = dict["time"]
+	color = dict["color"]
+	$Control/LineEdit.text = dict["name"]
+	changed_in()

@@ -26,6 +26,7 @@ var orbit_count = 0
 func _ready():
 	$VBoxContainer/HBoxContainer/Time_Container.set_time(unix_time)
 	$\"%3d_View\".set_sun_angle(unix_time)
+	$VBoxContainer/HBoxContainer/MenuButton.get_popup().id_pressed.connect(file_options)
 
 func _process(delta):
 	if not $VBoxContainer/HBoxContainer/HBoxContainer/TextureButton.button_pressed:
@@ -63,11 +64,13 @@ func orbit_delete(name):
 	orbit_3d.queue_free()
 	$\"%2D_View\".remove_orbit(name)
 
-func _on_Add_orbit_Button_pressed():
+func _on_Add_orbit_Button_pressed(dict = null):
 	var ctrl = Orbit_control.instantiate()
 	orbit_count+=1
 	ctrl.name = \"Orbit_%02d\" % orbit_count
 	ctrl.color = Color.CYAN
+	if dict != null:
+		ctrl.set_orbit_dict(dict)
 	$\"%Orbit_Container\".add_child(ctrl)
 	ctrl.connect(\"changed\", Callable(self, \"changed_orbit\"))
 	ctrl.connect(\"delete\", Callable(self, \"orbit_delete\"))
@@ -99,6 +102,24 @@ func _on_texture_button_toggled(button_pressed):
 
 func _on_x_pressed(speed_in):
 	speed = speed_in
+
+func file_options(id):
+	if id ==0:
+		print(\"Open\")
+	if id==1:
+		print(\"Save\")
+		print(get_data_for_save())
+	if id==2:
+		print(\"Save as\")
+
+func get_data_for_save():
+	var data = {}
+	var orbits = []
+	for orbit in %Orbit_Container.get_children():
+		data.append(orbit.get_orbit_dict())
+	data[\"time\"] = unix_time
+	data[\"orbits\"]=orbits
+	return data
 "
 
 [sub_resource type="FontFile" id="1"]
@@ -183,6 +204,13 @@ layout_mode = 2
 layout_mode = 2
 text = "Files"
 flat = false
+item_count = 3
+popup/item_0/text = "Open"
+popup/item_0/id = 0
+popup/item_1/text = "Save"
+popup/item_1/id = 1
+popup/item_2/text = "Save as"
+popup/item_2/id = 2
 
 [node name="Time_Container" type="HBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
