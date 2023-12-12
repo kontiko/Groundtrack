@@ -28,7 +28,9 @@ func _ready():
 	$VBoxContainer/HBoxContainer/Time_Container.set_time(unix_time)
 	$\"%3d_View\".set_sun_angle(unix_time)
 	$VBoxContainer/HBoxContainer/MenuButton.get_popup().id_pressed.connect(file_options)
-
+func _input(event):
+	if event.is_action(\"Save\"):
+		save()
 func _process(delta):
 	if not $VBoxContainer/HBoxContainer/HBoxContainer/TextureButton.button_pressed:
 		return
@@ -114,10 +116,10 @@ func file_options(id):
 		request_file_path_save()
 
 func request_file_path_save():
-	DisplayServer.file_dialog_show(\"Dialog\", \"C:/\", \"\", false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE, [\"*.orb\",\"*\"], Callable())
+	DisplayServer.file_dialog_show(\"Dialog\", \"C:/\", \"Orbits.orb\", false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE, [\"*.orb\",\"*\"], Callable())
 
 func request_file_path_open():
-	DisplayServer.file_dialog_show(\"Dialog\", \"C:/\", \"\", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, [\"*.orb\",\"*\"], file_path_open_callback)
+	DisplayServer.file_dialog_show(\"Dialog\", \"C:/\", \"Orbits.orb\", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, [\"*.orb\",\"*\"], file_path_open_callback)
 	
 func file_path_open_callback(status,selected_paths,selected_filter_index):
 	if not status:
@@ -131,6 +133,7 @@ func file_path_open_callback(status,selected_paths,selected_filter_index):
 	unix_time = data[\"time\"]
 	for orbit in data[\"orbits\"]:
 		_on_Add_orbit_Button_pressed(orbit)
+	time_step(0.0)
 func file_path_save_callback(status,selected_paths,selected_filter_index):
 	if not status:
 		return

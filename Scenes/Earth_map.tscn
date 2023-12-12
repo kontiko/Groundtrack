@@ -75,4 +75,5 @@ position = Vector2(512, 300)
 script = SubResource("1")
 
 [node name="Orbit_paths" type="Node2D" parent="."]
+z_index = -1
 script = ExtResource("2")
