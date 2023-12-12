@@ -1,0 +1,10 @@
+res://default_env.tres
+res://Scenes/Spatial.tscn
+res://resources/atmosphere.gdshader
+res://Scenes/Orbit_control.tscn
+res://Scripts/Orbit_control.gd
+res://Scenes/Main.tscn
+res://Scenes/Earth_map.tscn
+res://Scripts/GroundTrack_ctrl.gd
+res://Scenes/Groundtrack_view.tscn
+res://Scripts/Groundtrack.gd

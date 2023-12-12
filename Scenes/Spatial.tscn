@@ -1,11 +1,10 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=10 format=3 uid="uid://cseegh63onn60"]
 
-[ext_resource path="res://Scripts/Camera.gd" type="Script" id=2]
-[ext_resource path="res://resources/2k_earth_daymap.jpg" type="Texture" id=3]
-[ext_resource path="res://resources/th-3416968832.jpeg" type="Texture" id=4]
+[ext_resource type="Shader" path="res://resources/atmosphere.gdshader" id="1_wmokl"]
+[ext_resource type="Script" path="res://Scripts/Camera.gd" id="2"]
 
-[sub_resource type="GDScript" id=5]
-script/source = "extends Spatial
+[sub_resource type="GDScript" id="5"]
+script/source = "extends Node3D
 
 
 # Declare member variables here. Examples:
@@ -44,97 +43,60 @@ func set_sun_angle(unix):
 	$Tilt/Sun_orbit.rotation_degrees.y = angle
 "
 
-[sub_resource type="SphereMesh" id=10]
-radius = 6.5
-height = 13.0
+[sub_resource type="SphereMesh" id="10"]
+radius = 7.0
+height = 14.0
 
-[sub_resource type="Shader" id=8]
-code = "shader_type spatial;
-//render_mode unshaded;
-const vec3 sphere_position = vec3(0.0,0.0,0.0);
-const float sphere_radius = 6.471;
-uniform float thickness_scale = 0.5;
-varying vec3 cam_position;
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ovka4"]
+render_priority = 0
+shader = ExtResource("1_wmokl")
+shader_parameter/thickness_scale = 5.2
 
-vec3 raySpehereIntersectMaxDepthAlt(vec3 ro, vec3 rd,vec3 so, float sr, float max_depth){
-	float t = dot(so-ro,rd);
-	vec3 P = ro + rd*t;
-	float y = length(so -P);
-	
-	if (y>sr){
-		return vec3(-1.0);
-	}
-	float x = sqrt(sr*sr - y*y);
-	float t1 = max(t-x,0.0);
-	float t2 = min(t+x,max_depth);
-	return vec3(t1,t2,min(1.0-y/sphere_radius,0.016));
-}
-void vertex(){
-	cam_position = MODELVIEW_MATRIX[3].xyz;
-}
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_q8la5"]
+load_path = "res://.godot/imported/2k_earth_daymap.jpg-bca652a63a9fe09154fd90440beac7fe.s3tc.ctex"
 
-void fragment(){
-	float depth = texture(DEPTH_TEXTURE,SCREEN_UV).x;
-	vec3 ndc = vec3(SCREEN_UV, depth) * 2.0 - 1.0;
-	vec4 view = INV_PROJECTION_MATRIX * vec4(ndc,1.0);
-	view.xyz/= view.w;
-	float max_depth = length(view.xyz);
-	vec3 so =- (vec4(sphere_position, 1.0) * CAMERA_MATRIX).xyz;
-	vec3 rsi = raySpehereIntersectMaxDepthAlt(cam_position, VIEW, so , sphere_radius, max_depth);
-	
-	ALPHA = clamp((rsi.y - rsi.x)*thickness_scale*rsi.z,0.0,1.0);
-}
-"
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nf1qi"]
+albedo_texture = SubResource("CompressedTexture2D_q8la5")
 
-[sub_resource type="ShaderMaterial" id=9]
-shader = SubResource( 8 )
-shader_param/thickness_scale = 5.0
+[sub_resource type="SphereMesh" id="2"]
+material = SubResource("StandardMaterial3D_nf1qi")
+radius = 6.398
+height = 12.796
 
-[sub_resource type="SphereMesh" id=2]
-radius = 6.357
-height = 12.756
-
-[sub_resource type="SpatialMaterial" id=3]
-albedo_texture = ExtResource( 3 )
-
-[sub_resource type="PanoramaSky" id=7]
-panorama = ExtResource( 4 )
-
-[sub_resource type="Environment" id=6]
+[sub_resource type="Environment" id="6"]
 background_mode = 1
-background_sky = SubResource( 7 )
-ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_energy = 0.05
 
-[node name="Spatial" type="Spatial"]
-script = SubResource( 5 )
+[node name="Node3D" type="Node3D"]
+script = SubResource("5")
 
-[node name="Atmosphere" type="MeshInstance" parent="."]
-mesh = SubResource( 10 )
+[node name="Atmosphere" type="MeshInstance3D" parent="."]
+mesh = SubResource("10")
 skeleton = NodePath("../Earth")
-material/0 = SubResource( 9 )
+surface_material_override/0 = SubResource("ShaderMaterial_ovka4")
 
-[node name="Earth" type="MeshInstance" parent="."]
-mesh = SubResource( 2 )
-material/0 = SubResource( 3 )
+[node name="Earth" type="MeshInstance3D" parent="."]
+mesh = SubResource("2")
 
-[node name="Tilt" type="Spatial" parent="."]
-transform = Transform( 0.917755, -0.397148, 0, 0.397148, 0.917755, 0, 0, 0, 1, 0, 0, 0 )
+[node name="Tilt" type="Node3D" parent="."]
+transform = Transform3D(0.917755, -0.397148, 0, 0.397148, 0.917755, 0, 0, 0, 1, 0, 0, 0)
 
-[node name="Sun_orbit" type="Spatial" parent="Tilt"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+[node name="Sun_orbit" type="Node3D" parent="Tilt"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 
-[node name="DirectionalLight" type="DirectionalLight" parent="Tilt/Sun_orbit"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30 )
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Tilt/Sun_orbit"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
 
-[node name="Camera_helper" type="Spatial" parent="."]
+[node name="Camera_helper" type="Node3D" parent="."]
 
-[node name="Camera" type="Camera" parent="Camera_helper"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10 )
+[node name="Camera3D" type="Camera3D" parent="Camera_helper"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 keep_aspect = 0
 current = true
 far = 10000.0
-script = ExtResource( 2 )
+script = ExtResource("2")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 6 )
+environment = SubResource("6")

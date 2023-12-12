@@ -52,14 +52,11 @@ func calc_observations(preview_window):
 					overflights.append(current_overflight)
 					current_overflight = null
 	$overflight_table.set_table(overflights)
-func calculate_projection(point,time):
-	var dt = fposmod(time-PlanetInfo.solstice_unix_offset,PlanetInfo.period)
-	var sun_angle = 2*PI*dt/PlanetInfo.period
-	var time_dict = Time.get_time_dict_from_unix_time(int(time))
-	var earth_rot = (float(time_dict.hour)/24.0
-			+float(time_dict.minute)/1440.0
-			+float(time_dict.second)/86400)*2*PI
-	var rot = earth_rot + sun_angle + lng + PI
+func calculate_projection(point:Vector3,time:float)->Vector3:
+	var dt:float = fposmod(time-PlanetInfo.solstice_unix_offset,PlanetInfo.period)
+	var sun_angle:float = 2*PI*dt/PlanetInfo.period
+	var earth_rot:float = fposmod(time-43200.0,86400)/86400.0*2*PI
+	var rot:float = earth_rot + sun_angle + lng
 	#Transform the points so that the observation point lies at the origin and looks in the direction of the x axis
 	return point.rotated(Vector3(0,1,0),-rot).rotated(Vector3(1,0,0),lat)- Vector3(0,0,PlanetInfo.radius/1000.0)
 
@@ -75,7 +72,7 @@ func calculate_current_orbits():
 		var data = {"position":pos_2d,"color":orbit.color}
 		positions.append(data)
 	$"%Groundtrack".positions = positions
-	$"%Groundtrack".update()
+	$"%Groundtrack".queue_redraw()
 
 func estimate_J2_effect(point,orbit,orbit_count):
 	var node_precession = orbit.calc_LAN_precession()/180.0*PI*orbit_count
@@ -94,9 +91,9 @@ func update_overflight():
 	var current_pass = null
 	for orbit in $"%Orbit_Container".get_children():
 		for j in range(2):
-			for pos in orbit.point_count:
+			for pos in range(0,orbit.point_count,ceil(orbit.point_count/360)):
 				var time = orbit.last_orbit + orbit.period*(j + orbit.delta_area[pos]/orbit.complete_area)
-				var orbit_pos = estimate_J2_effect(orbit.points[pos],orbit,j)
+				var orbit_pos = orbit.points[pos]#estimate_J2_effect(orbit.points[pos],orbit,j)
 				var over_ground = calculate_projection(orbit_pos,time)
 				#check if zenith angle is smaller than 90 Degrees without calculating it first
 				var zenith_angle = over_ground.angle_to(Vector3(0,0,1))*180.0/PI
@@ -117,7 +114,7 @@ func update_overflight():
 		passes.append(current_pass)
 		current_pass = null
 	$"%Groundtrack".passes = passes
-	$"%Groundtrack".update()
+	$"%Groundtrack".queue_redraw()
 func _on_Button_pressed():
 	calc_observations(604800.0)
 
