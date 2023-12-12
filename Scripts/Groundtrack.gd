@@ -27,7 +27,7 @@ func _draw():
 		if len(points)<2:
 			continue
 		var last_point = points[0]
-		for i in range(1,len(points)):
+		for i in range(1,len(points),ceil(float(len(points))/30.0)):
 			draw_line(last_point*2,points[i]*2,col,2)
 			last_point = points[i]
 	for position_sat in positions:

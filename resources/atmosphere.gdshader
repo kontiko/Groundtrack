@@ -1,8 +1,8 @@
 shader_type spatial;
 //render_mode unshaded;
 const vec3 sphere_position = vec3(0.0,0.0,0.0);
-const float sphere_radius = 6.480;
-uniform float thickness_scale = 3.2;
+const float sphere_radius =6.398+0.1;
+uniform float thickness_scale = 1000.0;
 varying vec3 cam_position;
 uniform sampler2D DEPTH_TEXTURE: hint_depth_texture, filter_linear_mipmap;
 vec3 raySpehereIntersectMaxDepthAlt(vec3 ro, vec3 rd,vec3 so, float sr, float max_depth){

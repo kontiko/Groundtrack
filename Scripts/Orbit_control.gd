@@ -20,11 +20,10 @@ var period = 0
 var time = 0.0
 var last_orbit = 0.0
 var pos = 0
-var pos_offset = 0
 var delta_area = []
 var complete_area = 0.0
-var orbit_steps = 0.0
-var orbit_start_time = 0.0
+
+
 func update_Mesh():
 	delta_area = [0]
 	var vertices = PackedVector3Array()
@@ -214,18 +213,14 @@ func update_postion(unix):
 	time = unix
 	var changed = false
 	#Change Last orbit var to timestep when the orbit started at periapsis
-	while last_orbit + period < unix:
+	var rot = floor((unix-last_orbit)/period)
+	if rot != 0:
+		last_orbit +=rot*period
 		changed = true
-		last_orbit += period
-		aoa += calc_LAN_precession()
-		aop += calc_Apsides_precession()
-	while unix < last_orbit :
-		changed = true
-		last_orbit -= period
-		aoa -= calc_LAN_precession()
-		aop -= calc_Apsides_precession()
-	if changed:
+		aoa += calc_Apsides_precession()*rot
+		aop += calc_Apsides_precession()*rot
 		aoa= fposmod(aoa,360.0)
+		aop= fposmod(aop,360.0)
 		changed_in()
 		emit_signal("changed",name)
 	pos = searchpos(complete_area*float(time-last_orbit)/period)
@@ -265,7 +260,7 @@ func calc_groundpath():
 		last_point.x = last_point.x + PlanetInfo.base_angle - (j)*period/PlanetInfo.rotation_period*2*PI - steps
 		last_point.x = fposmod(last_point.x,2*PI)
 		last_point = last_point* Vector2(1024.0/(2*PI),512.0/(PI))
-		for i in range(len(points)):
+		for i in range(0,len(points)):
 			var ind_2 = (i + 1)%point_count
 			var o_2 = (i + 1)/point_count
 			var p2 = to_2d(points[ind_2])

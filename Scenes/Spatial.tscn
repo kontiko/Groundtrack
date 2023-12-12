@@ -44,13 +44,13 @@ func set_sun_angle(unix):
 "
 
 [sub_resource type="SphereMesh" id="10"]
-radius = 6.391
-height = 13.0
+radius = 7.0
+height = 14.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ovka4"]
 render_priority = 0
 shader = ExtResource("1_wmokl")
-shader_parameter/thickness_scale = 0.5
+shader_parameter/thickness_scale = 5.2
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_q8la5"]
 load_path = "res://.godot/imported/2k_earth_daymap.jpg-bca652a63a9fe09154fd90440beac7fe.s3tc.ctex"
