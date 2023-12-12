@@ -2,6 +2,6 @@ res://default_env.tres
 res://Scenes/Main.tscn
 res://resources/atmosphere.gdshader
 res://Scenes/clouds.gdshader
-res://Scenes/Earth_map.tscn
 res://Scenes/Orbit_control.tscn
 res://Scripts/Orbit_control.gd
+res://Scenes/Earth_map.tscn

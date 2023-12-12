@@ -313,7 +313,7 @@ func get_orbit_dict()->Dictionary:
 		"pos":pos,
 		"last_orbit":last_orbit,
 		"time":time,
-		"color":color,
+		"color":color.to_html(),
 		"name":$Control/LineEdit.text
 	}
 	return dict
@@ -326,6 +326,6 @@ func set_orbit_dict(dict:Dictionary):
 	pos = dict["pos"]
 	last_orbit = dict["last_orbit"]
 	time = dict["time"]
-	color = dict["color"]
+	color = Color.html(dict["color"])
 	$Control/LineEdit.text = dict["name"]
 	changed_in()

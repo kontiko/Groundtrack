@@ -22,6 +22,7 @@ script/source = "extends Control
 var speed = 50
 var unix_time = Time.get_unix_time_from_system()
 var orbit_count = 0
+var filepath = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$VBoxContainer/HBoxContainer/Time_Container.set_time(unix_time)
@@ -74,8 +75,9 @@ func _on_Add_orbit_Button_pressed(dict = null):
 	$\"%Orbit_Container\".add_child(ctrl)
 	ctrl.connect(\"changed\", Callable(self, \"changed_orbit\"))
 	ctrl.connect(\"delete\", Callable(self, \"orbit_delete\"))
-	ctrl.time = unix_time
-	ctrl.last_orbit = unix_time
+	if dict==null:
+		ctrl.time = unix_time
+		ctrl.last_orbit = unix_time
 	var mesh = Orbit_3D.instantiate()
 	mesh.mesh = ctrl.mesh
 	mesh.points = ctrl.points
@@ -105,21 +107,50 @@ func _on_x_pressed(speed_in):
 
 func file_options(id):
 	if id ==0:
-		print(\"Open\")
+		request_file_path_open()
 	if id==1:
-		print(\"Save\")
-		print(get_data_for_save())
+		save()
 	if id==2:
-		print(\"Save as\")
+		request_file_path_save()
 
+func request_file_path_save():
+	DisplayServer.file_dialog_show(\"Dialog\", \"C:/\", \"\", false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE, [\"*.orb\",\"*\"], Callable())
+
+func request_file_path_open():
+	DisplayServer.file_dialog_show(\"Dialog\", \"C:/\", \"\", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, [\"*.orb\",\"*\"], file_path_open_callback)
+	
+func file_path_open_callback(status,selected_paths,selected_filter_index):
+	if not status:
+		return
+	filepath = selected_paths[0]
+	for orbit in $\"%Orbit_Container\".get_children():
+		orbit_delete(orbit.name)
+		orbit.queue_free()
+	var file = FileAccess.open(filepath,FileAccess.READ)
+	var data = JSON.parse_string(file.get_as_text())
+	unix_time = data[\"time\"]
+	for orbit in data[\"orbits\"]:
+		_on_Add_orbit_Button_pressed(orbit)
+func file_path_save_callback(status,selected_paths,selected_filter_index):
+	if not status:
+		return
+	filepath = selected_paths[0]
+	save()
 func get_data_for_save():
 	var data = {}
 	var orbits = []
-	for orbit in %Orbit_Container.get_children():
+	for orbit in $\"%Orbit_Container\".get_children():
 		data.append(orbit.get_orbit_dict())
 	data[\"time\"] = unix_time
 	data[\"orbits\"]=orbits
 	return data
+
+func save():
+	if filepath==null:
+		request_file_path_save()
+		return
+	var file = FileAccess.open(filepath,FileAccess.WRITE)
+	file.store_string(JSON.stringify(get_data_for_save(),\"\\t\",false))
 "
 
 [sub_resource type="FontFile" id="1"]
@@ -400,5 +431,5 @@ position = Vector2(651, 118)
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/100x" to="." method="_on_x_pressed" binds= [100]]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/1000x" to="." method="_on_x_pressed" binds= [1000]]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/10000x" to="." method="_on_x_pressed" binds= [10000]]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/100000x" to="." method="_on_x_pressed" binds= [100000]]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/HBoxContainer/100000x" to="." method="_on_x_pressed"]
 [connection signal="pressed" from="VBoxContainer/HSplitContainer/Left_Organize/TabContainer/Orbits/Orbits/Add_orbit_Button" to="." method="_on_Add_orbit_Button_pressed"]
