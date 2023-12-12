@@ -323,4 +323,4 @@ func set_orbit_dict(dict:Dictionary):
 	time = dict["time"]
 	color = Color.html(dict["color"])
 	$Control/LineEdit.text = dict["name"]
-	changed_in()
+	call_deferred("changed_in")

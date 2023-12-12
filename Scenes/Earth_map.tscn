@@ -24,6 +24,11 @@ func remove_orbit(name):
 	positions.erase(name)
 	queue_redraw()
 	orbit_paths.queue_redraw()
+func clear():
+	orbit_paths.orbits = {}
+	positions = {}
+	queue_redraw()
+	orbit_paths.queue_redraw()
 func update_orbit(name,color,points):
 	orbit_paths.orbits[name] = [color,points]
 	orbit_paths.queue_redraw()

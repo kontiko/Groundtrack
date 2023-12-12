@@ -10,11 +10,13 @@ var positions = []
 func _ready():
 	pass # Replace with function body.
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-
+func del_orbit(name):
+	passes.erase(name)
+	positions.erase(name)
+	queue_redraw()
 func _draw():
 	for i in range(10):
 		draw_arc(Vector2(0,0),i*20,0,2*PI,360,Color.RED)
