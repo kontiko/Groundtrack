@@ -1,4 +1,3 @@
-@tool
 extends MeshInstance3D
 
 # Declare member variables here. Examples:
@@ -15,7 +14,7 @@ func _ready():
 func set_preview(pos):
 	$Position.position = points[pos]
 	
-func _process(delta):
+func _process(_delta):
 	var camera = get_parent().find_child("Camera3D",true,true)
 	var distance = ($Position.global_transform.origin - camera.global_transform.origin).length()
 	$Position.scale = Vector3(distance*point_size,distance*point_size,distance*point_size)

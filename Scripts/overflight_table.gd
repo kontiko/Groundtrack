@@ -39,5 +39,4 @@ func add_row(dict):
 	var alt = Label.new()
 	alt.text = str(dict["altitude"])
 	self.add_child(alt)
-func goto_time(time):
-	pass
+

@@ -21,7 +21,6 @@ func calc_observations(preview_window):
 		var final_time = sim_time + preview_window
 		while sim_time < final_time:
 			var  orbit_pos: Vector3 = orbit.points[pos%orbit.point_count]
-			var rotations = pos/orbit.point_count
 			orbit_pos = estimate_J2_effect(orbit_pos,orbit,int(sim_time-start_time)/orbit.period)
 			#calculate rotation from earth
 			var over_ground = calculate_projection(orbit_pos,sim_time)

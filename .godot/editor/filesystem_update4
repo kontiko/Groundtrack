@@ -1,7 +1,14 @@
 res://default_env.tres
-res://Scenes/Main.tscn
+res://Scenes/Orbit.tscn
 res://resources/atmosphere.gdshader
+res://Scripts/MeshInstance.gd
+res://Scenes/Main.tscn
 res://Scenes/Earth_map.tscn
 res://Scenes/Orbit_control.tscn
 res://Scenes/Spatial.tscn
 res://Scenes/Groundtrack_view.tscn
+res://Scenes/Orbit_paths.gd
+res://Scenes/Time_Ctrl.gd
+res://Scripts/GroundTrack_ctrl.gd
+res://Scripts/overflight_table.gd
+res://Scripts/Groundtrack.gd

@@ -37,7 +37,6 @@ func _on_Year_value_changed(value):
 
 func _on_Month_value_changed(value):
 	var date_time = Time.get_datetime_dict_from_unix_time(int(time))
-	print(int(value))
 	date_time.month = value
 	if value>12:
 		date_time.year += 1
@@ -56,15 +55,11 @@ func _on_Day_value_changed(value):
 	emit_signal("time_changed",time)
 
 func _on_Hour_value_changed(value):
-	print("Hello")
 	var current_hour = Time.get_datetime_dict_from_unix_time(int(time)).hour
-	print(value-current_hour)
 	time = time + (value-current_hour)*3600
-	print(current_hour)
 	emit_signal("time_changed",time)
 
 func _on_Minute_value_changed(value):
-	print("Test")
 	var current_min = Time.get_datetime_dict_from_unix_time(int(time)).minute
 	time = time + (value-current_min)*60
 	emit_signal("time_changed",time)
@@ -76,13 +71,13 @@ func _on_Second_value_changed(value):
 	emit_signal("time_changed",time)
 
 func correct_day_of_month(date_dict):
-	var time = Time.get_unix_time_from_datetime_dict({"year":date_dict.year,
+	var time_unix = Time.get_unix_time_from_datetime_dict({"year":date_dict.year,
 													 "month":date_dict.month,
 													 "day":1,
 													 "hour":date_dict.hour,
 													 "minute":date_dict.minute,
 													 "second":date_dict.second,})
-	return time + 86400.0*(date_dict.day-1)
+	return time_unix + 86400.0*(date_dict.day-1)
 
 
 func _on_Minute_changed():

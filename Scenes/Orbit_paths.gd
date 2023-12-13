@@ -12,7 +12,6 @@ func _ready():
 
 
 func _draw():
-	print("test")
 	#draw_line(Vector2(0,0),Vector2(1000,1000),Color.blue,20)
 	for data in orbits:
 		var color = orbits[data][0]

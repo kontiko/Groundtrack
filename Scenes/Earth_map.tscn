@@ -29,17 +29,17 @@ func clear():
 	positions = {}
 	queue_redraw()
 	orbit_paths.queue_redraw()
-func update_orbit(name,color,points):
-	orbit_paths.orbits[name] = [color,points]
+func update_orbit(name_in,color,points):
+	orbit_paths.orbits[name_in] = [color,points]
 	orbit_paths.queue_redraw()
-func show_satelite(name,pos,color):
-	positions[name] = [pos,color]
+func show_satelite(name_in,pos,color):
+	positions[name_in] = [pos,color]
 	queue_redraw()
 	
 func _draw():
-	for position in positions:
-		var pos = positions[position][0]
-		var col = positions[position][1]
+	for position_idx in positions:
+		var pos = positions[position_idx][0]
+		var col = positions[position_idx][1]
 		draw_circle(pos+Vector2(0,300),5,col)
 "
 
@@ -60,7 +60,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-func _process(delta):
+func _process(_delta):
 	var factor = 1024/get_viewport().size.x
 	#print(factor)
 	zoom = Vector2(factor,factor)

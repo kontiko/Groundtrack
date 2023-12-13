@@ -13,9 +13,9 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-func del_orbit(name):
-	passes.erase(name)
-	positions.erase(name)
+func del_orbit(orb_name):
+	passes.erase(orb_name)
+	positions.erase(orb_name)
 	queue_redraw()
 func _draw():
 	for i in range(10):

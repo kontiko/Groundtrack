@@ -22,10 +22,8 @@ func _ready():
 #func _process(delta):
 #	pass
 func zoom_in():
-	print($Camera_helper.scale/zoom_factor)
-	print(6.4/10.0)
-	var scale = max(($Camera_helper.scale/zoom_factor).x,7/10.0)
-	$Camera_helper.scale = Vector3(scale,scale,scale)
+	var scale_cam = max(($Camera_helper.scale/zoom_factor).x,7/10.0)
+	$Camera_helper.scale = Vector3(scale_cam,scale_cam,scale_cam)
 func zoom_out():
 	$Camera_helper.scale = $Camera_helper.scale*zoom_factor
 
