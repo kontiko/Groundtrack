@@ -196,18 +196,21 @@ func _on_pos_in_value_changed(value):
 ###############################################################################
 
 func changed_in():
+	update_display()
+	period = PlanetInfo.calc_Period(semi_major)
+	update_Mesh()
+	emit_signal("changed",name)
+
+func update_display():
 	$Configs/apo_in.set_value_code(apoapsis)
 	$Configs/peri_in.set_value_code(periapsis)
 	$Configs/major_in.set_value_code(semi_major)
 	$Configs/minor_in.set_value_code(semi_minor)
 	$Configs/aoa_in.set_value_code(aoa)
+	$Configs/aop_in.set_value_code(aop)
 	$Configs/Ecc_in.set_value_code(e)
+	$Configs/Incl_in.set_value_no_signal(incl)
 	$Control/ColorPickerButton.color = color
-	period = PlanetInfo.calc_Period(semi_major)
-	update_Mesh()
-	emit_signal("changed",name)
-
-
 #Function run by Main to update position in real time
 func update_postion(unix):
 	time = unix
@@ -316,6 +319,7 @@ func set_orbit_dict(dict:Dictionary):
 	semi_major = dict["semi_major"]
 	set_minor(dict["semi_minor"])
 	incl = dict["incl"]
+	print(incl)
 	aoa = dict["aoa"]
 	aop = dict["aop"]
 	pos = dict["pos"]
@@ -323,4 +327,5 @@ func set_orbit_dict(dict:Dictionary):
 	time = dict["time"]
 	color = Color.html(dict["color"])
 	$Control/LineEdit.text = dict["name"]
+	changed_in()
 	call_deferred("changed_in")
